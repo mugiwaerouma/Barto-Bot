@@ -539,7 +539,7 @@ const bartoSelfResponses = [
   "You call me and I appear—it’s like a LUFFY-SENPAI WORSHIP SUMMON!!!",
   "They call me the Cannibal, but the only thing I DEVOUR is NEWS ABOUT LUFFY-SENPAI'S GREATNESS!!!",
   "Talking about me is fine, but talking about LUFFY-SENPAI IS BETTER!!!"
-];
+],
 
   buggy: [
     "BUGGY THE CLOWN?! That walking nose became an Emperor… the sea is drunk.",
