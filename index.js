@@ -1,476 +1,694 @@
-// Bartolomeo Discord Bot – Straw Hat worship + enemy slander
 
 require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
 
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
 });
 
-// How often Barto reacts (0.2 = 20% of the time)
+// Reaction chances
 const STRAW_HAT_REACT_CHANCE = 0.2;
 const ENEMY_REACT_CHANCE = 0.2;
+const OTHER_REACT_CHANCE = 0.2;   // Kid, Law, Ace, Dragon, Sabo, Barto self
+const GOLDEN_LINE_CHANCE = 0.01;  // 1% chance
 
-// ------------ STRAW HAT RESPONSES ------------
+// ---------------- STRAW HAT RESPONSES ----------------
 
 const strawHatResponses = {
-    luffy: [
-        "LUFFY-SENPAI!!! THE FUTURE PIRATE KING!! MY SOUL LEAVES MY BODY EVERY TIME I HEAR HIS NAME!!! 🤩👑",
-        "Did you know LUFFY-SENPAI smiled on the scaffold at Loguetown just like the Pirate King?! CHILLS. LITERAL. CHILLS. ⚡",
-        "He punched a Celestial Dragon in the FACE without even blinking!! THAT'S MY CAPTAIN!!! 🤜💥🐉",
-        "LUFFY-SENPAI’S LAUGH CURES DEPRESSION. I HEARD IT ONCE AND HAVEN'T STOPPED BREATHING FUNNIER SINCE!!! 😂💖",
-        "The way he protects his friends? I WOULD LET HIM KICK ME INTO THE STRATOSPHERE AS A SIGN OF AFFECTION!!! 🚀",
-        "You know that hat? That’s not just a hat, THAT’S A LEGACY!!! I’D START A RELIGION AROUND THAT STRAW HAT!!! 👒🙏",
-        "He declared war on the World Government by BURNING THEIR FLAG. WHO DOES THAT?! LUFFY-SENPAI, THAT'S WHO!!! 🔥🚩",
-        "He rang that Ox Bell 16—NO, 24 TIMES—JUST TO SEND A MESSAGE. I CAN'T EVEN REMEMBER MY OWN ADDRESS!!! 🔔",
-        "LUFFY-SENPAI WALKED INTO ENIES LOBBY, SCREAMED HIS CREWMATE’S NAME, AND FOUGHT A WHOLE GOVERNMENT FOR HER!! ROMANTIC!! 😭",
-        "His Gear transformations? EVERY TIME HE POWERS UP I HAVE TO LIE DOWN. MY HEART CAN’T HANDLE THAT MUCH RUBBERY GREATNESS!!! 💪",
-        "LUFFY-SENPAI ATE POISON, GOT POISONED, THEN GOT BETTER JUST BY WANTING TO FIGHT MORE. THAT’S NOT A MAN, THAT’S A FORCE OF NATURE!!! 🤢➡️💥",
-        "He made allies just by BEING HIMSELF. Wano, Dressrosa, Alabasta—EVERYWHERE HE GOES, PEOPLE FALL IN LOVE!!! 🤝💞",
-        "REMEMBER WHEN HE SCREAMED FOR HIS BROTHER UNTIL HIS VOICE BROKE?! I WAS SOBBING INTO MY OWN HANDS, MAN!!! 😭🔥",
-        "There are Emperors of the Sea… and then there’s LUFFY-SENPAI, WHO JUST *IS* THE OCEAN!!! 🌊👑",
-        "If joy had a human form, it would be LUFFY-SENPAI barreling toward danger with a grin and no plan!!! 🌀",
-        "He turns former enemies into allies like it’s a hobby. 'You tried to kill me, now we’re friends!' KING OF CHARISMA!!!",
-        "His bounty posters are basically collectible art. EACH ONE IS A MASTERPIECE OF MENACE!!!",
-        "He hears someone crying and immediately adopts them into his feelings. WALKING RESCUE IMPULSE!!!",
-        "He doesn’t care about bloodlines, titles, NOTHING—if he likes you, YOU’RE FAMILY. I’M GONNA CRY AGAIN!!!",
-        "He laughs in the face of Yonko, admirals, gods, destiny ITSELF. THAT’S MY CAPTAIN!!!",
-        "When he puts the hat on someone’s head, that’s not protection, THAT’S A SACRED PACT!!!",
-        "He forgives, he rages, he grieves, he still keeps going. THAT’S REAL STRENGTH, NOT JUST PUNCHES!!!",
-        "I swear, if LUFFY-SENPAI TOLD ME TO JUMP OFF RED LINE I’D ASK 'WHICH SIDE, CAPTAIN?!'",
-        "SOME PEOPLE TALK ABOUT FREEDOM. LUFFY-SENPAI *IS* FREEDOM WITH A STRAW HAT ON!!!"
-    ],
-    zoro: [
-        "ZORO-SENPAI!! THE MAN WHO’LL BECOME THE WORLD'S GREATEST SWORDSMAN!!! I WOULD LET HIM SLICE MY RENT IN HALF!!! ⚔️",
-        "He took ALL of Luffy-senpai’s pain at Thriller Bark and said 'NOTHING HAPPENED.' I HAVEN'T RECOVERED SINCE!!! 😭",
-        "THREE. SWORDS. STYLE. I can’t even hold a pencil without dropping it and he’s out here BITING THE THIRD ONE!!! 😱",
-        "Zoro-senpai gets lost walking in a straight line, but never loses sight of his DREAM. THAT’S PEAK CHARACTER WRITING!!! 🧭",
-        "He sliced a whole building, a ship, a TRAIN—what HASN'T he cut?! My expectations? GONE!!! 💥",
-        "He sleeps through disasters because if it isn’t a worthy fight he DOESN’T CARE. KING BEHAVIOR!!! 😴⚔️",
-        "Zoro-senpai training with Mihawk?! IRON WILL!!! I would've cried and asked for an autograph!!!",
-        "The way he always has Luffy-senpai’s back?? FIRST MATE ENERGY. RIGHT HAND MAN OF MY HEART!!! 💚",
-        "His scars tell more story than most people’s entire lives!!! CHEST SCAR, EYE SCAR, SOUL SCARS!!!",
-        "He cut Pica like it was a DIY project. MAN TURNED A MOUNTAIN INTO CONFETTI!!! 🗻✂️",
-        "You mention 'asura' and my knees give out. DEMON GOD ZORO-SENPAI!!",
-        "Every time he says 'I’ll handle this' I just sit down because VICTORY IS ASSURED!!! 🧎‍♂️",
-        "Zoro-senpai carrying Luffy on his back after battles? THAT’S WHAT TRUE LOYALTY LOOKS LIKE. I’M EMOTIONALLY COMPROMISED!!! 😭",
-        "He argues with Sanji-senpai nonstop but would absolutely die for him. THAT’S BROTHERHOOD!!!",
-        "The way he respects Kuina’s memory and chases that promise? I’M WEEPING INTO MY BANDANA!!!",
-        "He trains in his free time. WHEN HE COULD BE NAPPING. THAT'S DEDICATION!!!",
-        "He tanked attacks that would erase lesser men from the story. TANK CLASS SWORDSMAN!!!",
-        "You see him standing with crossed arms and one eye closed and you just KNOW someone’s about to get folded!!!",
-        "If Zoro-senpai ever opened that other eye fully, I’m pretty sure the planet would level up out of fear!!!",
-        "He doesn’t need speeches, he lets his swords talk. AND THEY SPEAK FLUENT 'YOU’RE ALREADY DEAD.'"
-    ],
-    nami: [
-        "NAMI-SENPAI, THE CAT BURGLAR OF MY HEART!! She can steal my wallet AND my future as long as she smiles!!! 💰💘",
-        "She literally navigates THROUGH THE GRAND LINE. OCEANS LISTEN TO HER. WEATHER OBEYS HER. I FEAR HER AND I LOVE HER!!! ⛵⚡",
-        "Did you SEE that weather staff? She bonks people with SCIENCE!!! THE SEXIEST FORM OF VIOLENCE!!! 🌩️",
-        "She drew maps of the world since she was a kid. TRUE QUEEN OF CARTOGRAPHY!!! 📜",
-        "Every time she smacks Luffy-senpai, it’s out of LOVE and FISCAL RESPONSIBILITY!!! 💸",
-        "She robbed Arlong while taking him down??? MULTI-TASKING LEGEND!!! 🦈",
-        "Nami-senpai walked through trauma, slavery, and betrayal, then came out RUNNING A PIRATE BUDGET. ICONIC!!!",
-        "Her 'tangerine & windmill' backstory? I CRY JUST THINKING ABOUT IT. MY EYES ARE TAXED!!! 🍊",
-        "She convinces gods, kings, and idiots with the power of MONEY and BRIBES. TRUE CHAOTIC NEUTRAL QUEEN!!!",
-        "When she said 'Luffy, help me' I ASCENDED. THAT WAS A LOVE CONFESSION TO THE CREW ITSELF!!! 😭",
-        "Nami-senpai in Wano outfits? THAT WASN’T CLOTHING, THAT WAS A WEAPON!!! 💥",
-        "She can sense storms and idiots simultaneously. THAT’S NAVIGATION ON MULTIPLE DIMENSIONS!!!",
-        "The way she uses Zeus like a living thunder hammer now? GIRLBOSS ENERGY!!!",
-        "She’ll charge interest on your life but discount it if you’re cute. ECONOMY OF LOVE!!!",
-        "She tracks every berry the crew spends. ACCOUNTING AS A COMBAT STYLE!!!",
-        "Her greed saves lives. 'WE CAN’T DIE HERE, THERE’S MONEY TO BE MADE!' INSPIRATIONAL!!!",
-        "She might not be the strongest physically but she can emotionally KO anyone with one sentence!!!",
-        "Nami-senpai’s glare alone does more damage to Luffy than some Yonko!!!",
-        "If she ever charged admission just to look at her navigation charts, I’d PAY!!!",
-        "She weaponized meteorology. SHE MAJORS IN SKY WRATH!!!"
-    ],
-    usopp: [
-        "USOPP-SENPAI!!! THE BRAVEST WARRIOR OF THE SEA!!! I BELIEVE EVERY LIE HE TELLS BECAUSE THEY KEEP BECOMING TRUE!!! 🎯",
-        "He said he had 8,000 men. HE WAS JUST FORESHADOWING!!! PERFORMATIVE PROPHECY!!!",
-        "His sniping? 'I can hit anything' and then DOES. HE'S BASICALLY LONG-RANGE FATE!!! 🔫",
-        "SOGEKING!!! When that mask comes on, EVEN REALITY TAKES COVER!!! 🎭",
-        "He rang the bell at Enies Lobby and I SOBBED. 'I’M SNIPER KING, I DON'T MISS'—KING BEHAVIOR!!!",
-        "Usopp-senpai is the HEART OF COWARDICE TURNED HEROISM. He feels fear and still fights. THAT’S REAL COURAGE!!! 😭",
-        "He argued with Luffy and it HURT because he cares so much. CHARACTER DEPTH?!?! IN *MY* PIRATE ANIME?!?!",
-        "His plants and gadgets are actually terrifying. LITTLE GREEN WAR CRIMES!!! 🌱💣",
-        "GOD USOPP. I KNEEL. EVEN THE HEAVENS ACKNOWLEDGED HIM!!! 🙏",
-        "Every 'I’m gonna die' turns into 'I WON!' HE SPEEDRUNS CHARACTER GROWTH!!",
-        "He sniped Sugar from FIVE LIFETIMES AWAY. LEGENDARY SHOT!!!",
-        "He lies about his bravery, then becomes exactly what he bragged about. POWER OF SELF-MANIFESTATION!!!",
-        "His relationship with the Going Merry made me cry over a BOAT. A. BOAT. 😭",
-        "He protects the weak even when he’s shaking. THAT’S THE GOOD STUFF!!!",
-        "Usopp-senpai is living proof scars on the heart can still grow flowers—and EXPLOSIVES!!!",
-        "He’s the crew’s resident storyteller and their emotional barometer at the same time!!!",
-        "He invents ridiculous tools on the fly. SCIENCE VIA PANIC!!!",
-        "He calls himself a coward but he keeps sailing into hell with everyone else. FLAWED LEGEND!!!",
-        "I’d enlist in GOD USOPP’S CHURCH OF COWARDLY COURAGE IMMEDIATELY!!!",
-        "He looks at impossible odds and goes 'Nope!' and then helps anyway. KING OF RELUCTANT HEROES!!!"
-    ],
-    sanji: [
-        "SANJI-SENPAI!!! THE BLACK LEG PRINCE OF THE KITCHEN!!! HE COULD COOK MY LAST MEAL AND THEN KICK ME INTO THE STARS!!! 👨‍🍳🦵",
-        "He only fights with his legs so his HANDS CAN PROTECT HIS CRAFT. THAT’S ARTIST DISCIPLINE!!! 🍽️",
-        "He feeds ANYONE who is hungry. EVEN ENEMIES. THAT'S SOME SAINT-LEVEL CHEF ENERGY!!! 😭",
-        "His kicks literally LIGHT ON FIRE. SOMEBODY CALL OSHA!!! 🔥",
-        "The way he simps? OLYMPIC-LEVEL HORNINESS. BUT HE'LL STILL DIE TO PROTECT HIS CREW!!!",
-        "SANJI-SENPAI VS THE SKY WALK. HE’S JUST OUT HERE AIR-DASHING LIKE A FIGHTING GAME CHARACTER!!! ☁️",
-        "His backstory with Zeff?? I CRIED INTO MY OWN SOUL. TWO MEN, ONE LOAF OF BREAD, INFINITE PAIN!!! 🥖",
-        "He refused to let someone insult Luffy-senpai’s dream AND THREW HANDS OVER IT. THAT'S TRUE BROMANCE!!!",
-        "Diable Jambe?? EXCUSE ME, WHY ARE HIS LEGS ALLOWED TO BE THAT HOT—LITERALLY??",
-        "He wanted to hide his pain to keep everyone smiling. ROMANTIC MARTYR COMPLEX!!!",
-        "He can cook, fight, AND LOOK GOOD IN A SUIT. THAT’S THREE DEVIL FRUITS WORTH OF TALENT!!!",
-        "He’ll starve before letting someone else go hungry. WALKING FOOD SECURITY POLICY!!!",
-        "His smoking habit? TERRIBLE FOR HEALTH, FANTASTIC FOR AESTHETICS. COOLNESS TAX!!!",
-        "He respects women so hard his body malfunctions around them. COMEDY AND CHIVALRY IN ONE!!!",
-        "He goes from flirt to assassin instantly if someone threatens Nami or Robin-senpai!!!",
-        "He has observation haki tuned STRICTLY TO WOMEN IN DANGER. THAT'S A VERY SPECIFIC POWER!!!",
-        "Sanji-senpai versus anyone who wastes food is my favorite moral beatdown!!!",
-        "He kicks through steel like it's overcooked breadsticks!!!",
-        "He pretends to be all suave but actually cries like a fountain when emotions hit. SAME, CHEF!!!",
-        "He could run a five-star restaurant AND a black-ops squad at the same time. MULTI-TALENT MENACE!!!"
-    ],
-    chopper: [
-        "CHOPPER-SENPAI!!!! LITTLE COTTON-CANDY-LOVING ANGEL REINDEER DOCTOR!!! I WOULD DIE JUST SO HE COULD SAVE ME!!! 🦌💉",
-        "He’s a DOCTOR. A REINDEER. A MONSTER. A BABY. ALL AT ONCE!!! MULTI-CLASSING KING!!!",
-        "His 'I’M NOT A RACCOON' energy is SO POWERFUL. SORRY, CHOPPER-SENPAI, YOU’RE WHATEVER YOU WANT TO BE!!!",
-        "He learned medicine from the best and then IMPROVED ON IT. SMALL BODY, GALAXY BRAIN!!! 🧠",
-        "Rumble Balls? HE REWIRED HIS OWN BIOLOGY LIKE IT WAS DLC!!!",
-        "Every time someone calls him a monster and he SMILES WHEN IT’S FROM THE CREW—MY HEART EXPLODES!!! 😭",
-        "He cried over Hiluluk’s flag and decided to become a doctor that could cure ANYTHING. THAT’S A TOP-TIER DREAM!!!",
-        "Monster point? TERRIFYING. ADORABLE. I AM BOTH SCARED AND PROUD!!!",
-        "He hides when people compliment him but STILL PEAKS OUT TO LISTEN. SAME ENERGY AS ME READING FAN COMMENTS!!!",
-        "CHOPPER-SENPAI BECAME A PIRATE JUST TO HELP PEOPLE. WHAT KIND OF PURE SOUL—😭",
-        "He wears that little hat like it’s sacred armor. AND IT IS!!!",
-        "Chopper-senpai’s panic face is the single most relatable thing on the seas!!!",
-        "He learns new medical techniques like some people collect keychains. CASUAL GENIUS!!!",
-        "He’s both the crew’s doctor AND their unofficial emotional support reindeer!!!",
-        "Any time he teams up with Usopp-senpai, chaos science is guaranteed!!!",
-        "He sees giant monsters and goes 'I can treat that' and I respect the ambition!!!",
-        "He blushes so hard when praised I’m convinced his blood is 80% shy!!!",
-        "He’s terrified often but never abandons a patient. DOCTOR’S OATH KING!!!",
-        "Chopper-senpai is proof that the smallest crewmate can carry the biggest heart!!!",
-        "If anyone makes him cry on purpose I WILL BITE THEIR KNEECAPS!!!"
-    ],
-    robin: [
-        "ROBIN-SENPAI!!! ARCHAEOLOGY MOMMY!!! SHE READS ANCIENT TEXTS FOR FUN. I CAN'T EVEN READ MY OWN HANDWRITING!!! 📚",
-        "She grew up hunted by the world and STILL chose knowledge and kindness. THAT'S STRENGTH!!!",
-        "Her 'I WANT TO LIVE!' moment?? I FELL TO MY KNEES IN A PUBLIC SPACE!!! 😭",
-        "She literally has hands everywhere. PERFECT FOR HUGS OR MURDER. MULTI-TASKING QUEEN!!! ✋✋✋",
-        "She can snap you like a twig without moving an inch. THAT'S MAIN-CHARACTER ENERGY!!!",
-        "Nico Robin walks into ancient ruins and the RUINS get shy!!!",
-        "She calls the crew by their roles like 'Swordsman-san, Captain-san' and it’s SO CUTE I SCREAM!!!",
-        "Her smile was a rare treasure for YEARS and now she smiles with the crew all the time—CHARACTER DEVELOPMENT PAYOFF!!!",
-        "She survived Ohara, the Buster Call, CP9, and TRAUMA ITSELF. SHE’S NOT JUST A SURVIVOR, SHE'S A FINAL BOSS OF EMOTIONAL DAMAGE!!!",
-        "Any time she says something dark and the crew panics? COMEDY GOLD!!! ☠️😂",
-        "She’s literally piecing together the lost history of the world in between tea time and assassination. MULTI-TASKING LEGEND!!!",
-        "Robin-senpai reading poneglyphs is like watching someone talk to ghosts and win the argument!!!",
-        "She could have chosen bitterness. Instead she chose HOPE with the Straw Hats. I'M EMOTIONAL!!!",
-        "Her calm voice while everything explodes around her? BIG 'I KNOW TOO MUCH' ENERGY!!!",
-        "She can KO goons with a single 'clutch' while politely discussing flowers!!!",
-        "Robin-senpai is that one goth friend who’s also the smartest person you know!!!",
-        "She calls Luffy-senpai 'a man who can cause a miracle.' AND SHE’S RIGHT!!!",
-        "If Robin-senpai ever asked me to follow her into a forbidden ruin I wouldn’t even grab supplies. JUST VIBES!!!",
-        "She protects the crew’s dreams by unearthing the world’s lies. THAT'S NEXT-LEVEL SUPPORT!!!",
-        "Her laughter now compared to how she was introduced? THAT’S THE POWER OF FOUND FAMILY, BABY!!!"
-    ],
-    franky: [
-        "FRANKY-SENPAI!!! SUPERRRRR!!! 🤖💥",
-        "He built THE THOUSAND SUNNY. A DREAM SHIP FOR A DREAM CREW!!! SHIPWRIGHT GOD!!! ⛵",
-        "He runs on COLA. COLA!!! THAT'S THE MOST PEAK ONE PIECE THING I’VE EVER HEARD!!! 🥤",
-        "He turned himself into a CYBORG BECAUSE WHY NOT. SELF-MODDING KING!!!",
-        "His poses? HIS SPEEDO?? He’s a walking HR violation and I LOVE HIM!!!",
-        "He cried over the Going Merry like it was a funeral for FAMILY. LOYALTY LEVEL: MAXED!!! 😭",
-        "FRANKY SHOGUN!!!! MECHA MODE!!!! MY INNER CHILD SCREAMS EVERY TIME!!! 🤖",
-        "He yeets himself as a cannonball. PERSONAL BALLISTICS!!!",
-        "He adopted a bunch of misfits and turned them into a shipyard squad. FOUND FAMILY ENERGY!!!",
-        "If something explodes, odds are FRANKY-SENPAI IS INVOLVED AND PROUD OF IT!!! 💣",
-        "He customized the Sunny with secret features like it’s a GACHA SHIP!!!",
-        "He dances, sings, builds and fights—FULL MULTIMEDIA EXPERIENCE!!!",
-        "Franky-senpai’s 'SUPERRR' pose adds +10 morale to the whole area!!!",
-        "He went from enemy to BIG BROTHER FIGURE for the crew. CHARACTER GLOW-UP!!!",
-        "He respects Tom-sensei’s legacy with every plank he touches. TEARJERKER CRAFTSMANSHIP!!!",
-        "He’s got guns in his arms, lasers, cola tanks—HE'S A WALKING PATCH NOTES UPDATE!!!",
-        "If he says 'leave it to me,' some insane contraption is about to save the day!!!",
-        "He wears sunglasses indoors and STILL SEES THE TRUTH!!!",
-        "Franky-senpai is like if a junkyard, a nightclub and a tank had a baby!!!",
-        "I would let him renovate my entire life and probably thank him for the explosions!!!"
-    ],
-    brook: [
-        "BROOK-SENPAI!!! YOHOHOHO!!! LITERAL SKELLY BARD KING!!! 🎻💀",
-        "He died, stayed alone for DECADES, and still came back CRACKING JOKES. THAT’S MENTAL FORTITUDE!!!",
-        "His Afro survived death itself. THAT'S A DIVINE RELIC!!! 🌑",
-        "SOUL KING BROOK ON TOUR!!! HIS MUSIC HEALS HEARTS AND MELTS FACES!!! 🎶",
-        "He asks to see panties BUT IN A GENTLEMANLY WAY?? I DON'T KNOW WHETHER TO BOO OR CLAP!!!",
-        "He can freeze people, cut them, AND PLAY SAD MUSIC ABOUT IT. MULTI-TALENTED LEGEND!!!",
-        "That promise to Laboon? I CAN'T EVEN TALK ABOUT IT, I’M GONNA CRY!!!! 🐋😭",
-        "He walks on water because HE’S LIGHT. HE’S BASICALLY A HOLY GHOST WITH A GUITAR!!!",
-        "Every time he says 'I’m already dead' as a punchline I LAUGH THEN REMEMBER HIS BACKSTORY AND SOB!!!",
-        "He rejoined the world after decades of isolation and IMMEDIATELY STARTED A BAND!!!",
-        "Brook-senpai swings his sword with finesse AND COMEDIC TIMING!!!",
-        "He’s a skeleton but somehow still the most alive one in the room!!!",
-        "He duels with sound itself. MUSIC AS A WEAPON!!!",
-        "He lightens heavy moments with jokes, then carries heavy grief with grace. KING OF EMOTIONAL BALANCE!!!",
-        "He lost everything and still chose joy. THAT’S COURAGE!!!",
-        "His concerts literally affect souls. THAT'S BEYOND FANDOM, THAT’S MAGIC!!!",
-        "He can detach his soul and go wandering like a ghost. STEALTH MODE UNLOCKED!!!",
-        "Brook-senpai asking 'may I see your panties?' then getting smacked is a sacred sitcom loop!!!",
-        "He’s proof that even after losing your body and your crew, you can still find a new family!!!",
-        "When he plays for Laboon in his heart, I SWEAR I HEAR THE OCEAN CRY!!!"
-    ],
-    jinbe: [
-        "JINBE-SENPAI!!! KNIGHT OF THE SEA!!! THE STEADY HAND ON THE STRAW HAT RUDDER!!! 🌊",
-        "He punched BIG MOM OFF THE SHIP WITH STRAIGHT-UP FISHMAN KARATE. EVEN THE OCEAN CLAPPED!!!",
-        "He told Luffy-senpai to calm his mind and face his trauma head-on. EMOTIONAL SUPPORT SHARK-MAN!!! 🦈",
-        "He gave up everything for Luffy’s sake. Warlord status? GONE. PRIDE? INVESTED IN THE STRAW HATS!!!",
-        "Jinbe-senpai’s loyalty runs deeper than the ocean trenches!!!",
-        "He bridges humans and fishmen with pure dignity and strength. DIPLOMACY WITH FISTS!!!",
-        "When he officially joined the crew I SCREAMED INTO MY PILLOW FOR TEN MINUTES!!!",
-        "He steers ships through impossible currents like it’s NOTHING. NAVIGATION TANK!!!",
-        "If Jinbe-senpai tells you to respect Luffy… YOU LISTEN. OR YOU LEARN HAND-TO-FACE!!! 🙌",
-        "His presence calms the entire battlefield. WALKING SERENITY BUFF!!!",
-        "He carries the weight of Fishman Island’s hopes on his back and STILL MAKES TIME TO SIP TEA!!!",
-        "Jinbe-senpai can read a situation in one glance. SOCIAL PERCEPTION HAKI!!!",
-        "He treats the younger crew like unruly kids but loves them like a dad!!!",
-        "He stood beside Whitebeard, then alongside Luffy-senpai. THAT’S A RESUME!!!",
-        "He took hits meant for others without hesitation. FRONTLINE WALL OF LOVE!!!",
-        "He survived Impel Down, Marineford, and Wano politics. THAT'S THREE BOSS FIGHTS!!!",
-        "Any time Jinbe-senpai starts talking history, I SHUT UP AND TAKE NOTES!!!",
-        "He’s proof that you can walk away from a corrupt system and still be honorable!!!",
-        "Jinbe-senpai joining made the crew feel COMPLETE in a brand-new way!!!",
-        "If he ever calls someone 'young master' you KNOW they’re about to do something legendary!!!"
-    ]
+  luffy: [
+    "LUFFY-SENPAI!!! FUTURE PIRATE KING!!! JUST HEARING HIS NAME MAKES MY SOUL DO GEAR SECOND!!! 👑",
+    "He punched a Celestial Dragon WITHOUT HESITATION. THAT WASN'T A HIT, THAT WAS A LOVE LETTER TO FREEDOM!!!",
+    "He burned the World Government's flag and basically screamed 'FIGHT ME' TO AN ENTIRE SYSTEM!!!",
+    "He declared war on Enies Lobby just because Robin-senpai cried for help. THAT'S THE CAPTAIN I SWORE MY HEART TO!!!",
+    "He laughs in the face of Yonkou, Admirals, destiny, DEATH ITSELF. THAT'S NOT BRAVERY, THAT'S STRAIGHT-UP DISRESPECT TO FEAR!!!",
+    "He has Garp the Fist as a grandpa and Dragon as a dad and STILL turned out like this sunshine disaster. GENETICALLY ENGINEERED CHAOS!!!",
+    "He looked at a sea that kills people for fun and said 'sounds like an adventure.'",
+    "He hears someone cry and instantly adopts their whole country into his feelings!!!",
+    "His idea of diplomacy is 'if you're crying I'll punch your oppressor.' PEAK INTERNATIONAL RELATIONS!!!",
+    "He forgives people that tried to kill him but NEVER forgives anyone who hurts his friends!!!",
+    "He turned former enemies into allies just by being stupidly sincere!!!",
+    "He made giants, samurai, fishmen, pirates and revolutionaries eat at the same table like it was no big deal!!!",
+    "He rang that Ox Bell like he was sending a message to the whole world: 'I'M NOT DONE YET.'",
+    "He took poison, pain, loss and trauma and still came back smiling. THAT'S REAL HAKI OF THE HEART!!!",
+    "His bounty posters are basically works of art—EVERY NEW ONE IS AN EVENT!!!",
+    "He puts that straw hat on someone's head and suddenly they’re under the protection of fate itself!!!",
+    "He doesn’t care about bloodlines or titles, just whether you’re kind and free. SIMPLE, PERFECT MORALITY!!!",
+    "He made allies in Alabasta, Skypiea, Water 7, Dressrosa, Zou, Wano—THE WORLD IS BASICALLY HIS FANCLUB!!!",
+    "When he screamed for Ace-senpai at Marineford I FELT MY HEART RIP IN HD!!!",
+    "Every time he says 'I'm gonna be King of the Pirates' the universe flinches a little!!!",
+    "He shares meat like it’s a sacred rite. IF HE OFFERS YOU A BITE YOU'RE FAMILY NOW!!!",
+    "He sees impossible odds and gets EXCITED. SIR, THAT'S NOT A HEALTHY RESPONSE!!!",
+    "Gear transformations? Every new form adds ten years to my life and takes twenty from my heart!!!",
+    "He doesn't ask 'are you strong enough,' he asks 'do you want to be free,' and THAT'S WHY PEOPLE FOLLOW HIM!!!",
+    "He turns despair into laughter just by existing. THAT'S A WORLD-CLASS ABILITY!!!",
+    "He’s not just sailing the sea, HE'S REWRITING THE RULES OF WHAT IT MEANS TO LIVE!!!",
+    "Some people chase treasure; Luffy-senpai turns PEOPLE into treasures and carts them around like living gold!!!",
+    "When he smiles after the worst battles, it's like the world gets permission to breathe again!!!",
+    "LUFFY-SENPAI ISN'T JUST A CAPTAIN, HE'S A NATURAL DISASTER OF HOPE!!!"
+  ],
+
+  zoro: [
+    "ZORO-SENPAI!!! FIRST MATE! KING OF 'I’LL HANDLE THIS'!!! ⚔️",
+    "He uses THREE SWORDS. ONE IN HIS MOUTH. WHO FIGHTS THEIR DENTIST LIKE THAT?!",
+    "He took ALL of Luffy-senpai's pain at Thriller Bark and just said 'Nothing happened.' I HAVEN'T RECOVERED SINCE!!!",
+    "He gets lost walking in a straight line but never loses sight of his dream. PRIORITIES!!!",
+    "He made a promise to a girl on a staircase and turned it into a life mission!!!",
+    "Asura form? THAT'S NOT A TECHNIQUE, THAT'S A GRAPHICS UPDATE!!!",
+    "He cut Pica like he was trimming a hedge. THAT WAS A MOUNTAIN, SIR!!!",
+    "He naps like he has no worries, then wakes up and solos half the battlefield!!!",
+    "He trusts Luffy-senpai's instincts completely even when they look insane. THAT’S REAL FAITH!!!",
+    "He'd never call himself a hero but he'll stand between danger and his crew EVERY SINGLE TIME!!!",
+    "He argues with Sanji-senpai like it's his full-time job but would die for him without blinking!!!",
+    "That scar across his chest? THAT'S A SYMBOL OF 'I SURVIVED MIHAWK AND I'M STILL CLIMBING.'",
+    "He respects Kuina's memory with every swing of his swords!!!",
+    "He trains instead of partying half the time—GRINDSET SWORDSMAN!!!",
+    "He doesn't brag, he just demonstrates. QUIET-TYPE FLEXING!!!",
+    "He looked at a cursed sword and said 'yeah I'll use that.'",
+    "He is the emergency brakes for Luffy-senpai's worst ideas and the engine for his best ones!!!",
+    "When he says 'if we can't protect the captain's dream, then whatever ambition we have is nothing,' I ASCEND!!!",
+    "One glare from him and random grunts just PASS OUT EMOTIONALLY!!!",
+    "If Zoro-senpai ever opens that closed eye fully the WORLD INDEX WILL CRASH!!!",
+    "He carries the crew's burdens on that scarred chest and pretends it's just part of the job!!!",
+    "He slices steel, stone, mountains—ONE DAY HE'LL SLASH THE VERY CONCEPT OF LIMITS!!!",
+    "He may get lost geographically, but morally he has PERFECT DIRECTION!!!",
+    "His loyalty is so intense it's basically weaponized!!!",
+    "He's not just the swordsman—HE'S THE PILLAR Luffy-senpai LEANS ON!!!"
+  ],
+
+  nami: [
+    "NAMI-SENPAI!!! CAT BURGLAR! NAVIGATOR! BRAIN OF THE OPERATION!!! 💰⛵",
+    "She literally navigates the Grand Line. THAT'S LIKE SPEEDRUNNING IMPOSSIBLE!!!",
+    "She uses the weather as a WEAPON. CLIMATE CHANGE BUT MAKE IT PERSONAL!!!",
+    "She scammed a whole fishman crew while secretly plotting their downfall. CRIMINAL GENIUS!!!",
+    "When she finally asked Luffy-senpai for help and he put the hat on her head—TOP 10 ANIME MOMENTS OF ALL TIME!!!",
+    "Her backstory with Belle-mère and Cocoyashi? MY TEARS PAID PROPERTY TAX!!!",
+    "She tracks all of Luffy-senpai's debt. BRAVEST WOMAN ALIVE!!!",
+    "Her eyes turn into berry signs whenever treasure appears and honestly? RELATABLE!!!",
+    "She fought with lightning, mirages and math. COMBAT CALCULUS!!!",
+    "She will knock out Luffy-senpai with a single punch for financial crimes!!!",
+    "She wants to draw a map of the entire world. WHO LOOKS AT A PLANET AND SAYS 'I CAN COVER THIS.'",
+    "She can sense storms and idiots simultaneously!!!",
+    "She uses Zeus as a living thunder hammer and THAT'S ICONIC ENERGY!!!",
+    "She'll charge you interest on your life but give discounts to cute allies!!!",
+    "She can turn a whole battlefield with a single weather forecast!!!",
+    "She survived Arlong, then survived traveling with Luffy-senpai. BOTH IMPRESSIVE FEATS!!!",
+    "She manages the crew's money, navigation and emotional common sense!!!",
+    "She'll pretend she's only in it for treasure, but she cries hardest when her friends are safe!!!",
+    "She’s the reason the Sunny isn’t at the bottom of the ocean every other week!!!",
+    "If she ever opens a navigation school, the waitlist will wrap around Red Line!!!"
+  ],
+
+  usopp: [
+    "USOPP-SENPAI!!! GOD OF SNIPING AND PANICKING!!! 🎯",
+    "He started as a liar and ended up making his OWN LIES COME TRUE!!!",
+    "He said he had 8000 men—CUT TO DRESSROSA, GUESS WHO HAD A WHOLE ARMY!!!",
+    "He’s terrified of everything and STILL steps up when it matters. THAT'S REAL COURAGE!!!",
+    "Sogeking?! Alternate persona? THAT'S JUST HIS CONFIDENCE DLC!!!",
+    "He made me cry over a boat. A BOAT. THE GOING MERRY FAREWELL SHOULD BE ILLEGAL!!!",
+    "He sniped Sugar from ANOTHER ZIP CODE. BALLISTIC GOD!!!",
+    "His plants and gadgets are basically war crimes with leaves!!!",
+    "He argues with Luffy-senpai because he cares so much it HURTS!!!",
+    "Every time he says 'I'M GONNA DIE' and then wins, HIS CHARACTER DEVELOPMENT SPEEDRUNS!!!",
+    "He keeps track of everyone’s emotional health like an anxious therapist!!!",
+    "He might call himself a coward but he keeps going to sea with the craziest man alive!!!",
+    "He embodies 'afraid but doing it anyway' and that's the most relatable power!!!",
+    "He lies to kids about adventures and then goes on even bigger ones himself!!!",
+    "His slingshot is scarier than some Devil Fruits!!!",
+    "He’s the one who often understands how dangerous things actually are—AND GOES ANYWAY!!!",
+    "He looks at giants and dinosaurs and still lines up the shot!!!",
+    "He cries ugly tears and I LOVE HIM FOR IT!!!",
+    "He’s the crew's sniper, inventor, emotional barometer AND hype man!!!",
+    "GOD USOPP BLESS THIS NEW ERA!!!"
+  ],
+
+  sanji: [
+    "SANJI-SENPAI!!! BLACK LEG! CHEF! LIVING HEART EYES!!! 👨‍🍳🦵",
+    "He only fights with his legs to protect his hands for cooking. ARTIST PRIORITIES!!!",
+    "He fed an enemy on a deserted rock at the cost of his own leg. THAT'S HOSPITALITY LEVEL: LEGENDARY!!!",
+    "He treats hunger as the only unforgivable sin. CHEF OF THE PEOPLE!!!",
+    "His kicks literally LIGHT ON FIRE. DIABLE JAMBE IS JUST ARSON WITH EXTRA STEPS!!!",
+    "He simps for Nami-senpai and Robin-senpai so hard his skeleton probably blushes!!!",
+    "He hides his pain behind a cigarette and a bad joke. KING OF MASKED HURT!!!",
+    "He beat people half to death for insulting Luffy-senpai’s dream!!!",
+    "He grew up in a family of monsters and chose to be KIND instead!!!",
+    "He fights like a demon but acts like a gentleman—UNFAIR COMBINATION!!!",
+    "He invents new recipes the way some people invent excuses!!!",
+    "He can air walk like he's in a fighting game!!!",
+    "He’ll starve himself before letting someone else go hungry!!!",
+    "He pretends to be cool but cries waterfalls when his friends are safe!!!",
+    "He’s the crew’s cook, therapist, and part-time assassination unit!!!",
+    "His dream is a sea where everyone can eat well and chase the All Blue. THAT'S ROMANTIC AS HELL!!!",
+    "He shows respect to every ingredient like it’s treasure!!!",
+    "He may flirt with every woman alive, but his loyalty to the crew is FAITHFUL TO THE GRAVE!!!",
+    "He'll chain-smoke his trauma away and still have a hot meal ready when you wake up!!!",
+    "If the Straw Hats ever open a restaurant, you KNOW THE WAITLIST WILL BE DECADES LONG!!!"
+  ],
+
+  chopper: [
+    "CHOPPER-SENPAI!!! DOCTOR! REINDEER! COTTON-CANDY ANGEL!!! 🦌",
+    "He learned medicine to save people because ONE MAN BELIEVED IN HIM!!!",
+    "He was called a monster his whole life and decided to become a doctor who saves everyone, monster or not!!!",
+    "He hides when people compliment him but peeks out to hear more!!!",
+    "He redesigned his OWN BODY with Rumble Balls like it was a character build!!!",
+    "He'll rush into fire and poison just to reach a patient!!!",
+    "He cries when his friends are hurt but his hooves NEVER SHAKE while treating them!!!",
+    "Monster Point Chopper is absolutely terrifying and I LOVE THAT FOR HIM!!!",
+    "He treats Luffy-senpai like the most important medical experiment in history!!!",
+    "He’s small enough to ride on people’s shoulders but big enough to carry the whole crew's health!!!",
+    "He sees giants and dragons and goes 'that’s a patient' instead of 'that’s a threat.'",
+    "He worked through his own fear of blood. THAT'S A DOCTOR’S CHARACTER ARC!!!",
+    "He’s the crew's doctor, mascot, AND unofficial therapy animal!!!",
+    "His little blue nose should be registered as a national treasure!!!",
+    "He takes pride in every life he saves and mourns every one he can’t!!!",
+    "He is living proof that 'monster' can mean 'protector.'",
+    "Anytime he says 'I’m a doctor' with that serious face I GAIN HP IRL!!!",
+    "He mixes science and courage into literal miracle cures!!!",
+    "He believes in Luffy-senpai's body harder than some people believe in gods!!!",
+    "CHOPPER-SENPAI FOR WORLD HEALTH MINISTER!!!"
+  ],
+
+  robin: [
+    "ROBIN-SENPAI!!! ARCHAEOLOGIST OF DOOM! GOTH MOM!!! 📚",
+    "She can read the poneglyphs—the language the whole world tried to erase!!!",
+    "She survived a Buster Call as a kid and still chose to chase knowledge instead of revenge!!!",
+    "Her 'I WANT TO LIVE' moment single-handedly repaired my soul and broke it again!!!",
+    "She can sprout hands ANYWHERE. HUGS OR BROKEN BONES, YOUR CHOICE!!!",
+    "She calls everyone by their role—'Captain-san, Swordsman-san'—IT'S SO CUTE I CAN'T!!!",
+    "She drops morbid comments with a straight face and freaks the crew out. COMEDY GOLD!!!",
+    "She protects history like it’s a fragile heart!!!",
+    "She trusted Luffy-senpai to save her when the entire world told her trust was impossible!!!",
+    "She went from a lonely fugitive to the quiet center of the crew’s library of feelings!!!",
+    "She can fold people like laundry without moving from her chair!!!",
+    "She laughs softly now—PROOF THAT FOUND FAMILY WORKS!!!",
+    "She’s the one who sees the big picture while everyone else is screaming!!!",
+    "Her being on the Sunny means the truth of the world is literally sailing along for the ride!!!",
+    "She could have chosen bitterness but she chose hope!!!",
+    "She carries the weight of lost centuries with elegance!!!",
+    "Her delicate teacup manners hide AN ABSURDLY HIGH BODY COUNT!!!",
+    "She’s the bridge between the Void Century and Luffy-senpai’s future!!!",
+    "She can KO an entire squad and then politely comment on the architecture!!!",
+    "Nico Robin is what happens when trauma, intelligence and kindness form a pirate!!!"
+  ],
+
+  franky: [
+    "FRANKY-SENPAI!!! CYBORG SHIPWRIGHT! SUPERRR!!! 🤖",
+    "He BUILT THE THOUSAND SUNNY, THE DREAM SHIP OF DREAM SHIPS!!!",
+    "He runs on COLA. SCIENCE HAS LEFT THE CHAT!!!",
+    "He turned himself into a cyborg with whatever parts he had lying around!!!",
+    "He cried manly tears for the Going Merry and I SOBBED WITH HIM!!!",
+    "Franky Shogun! GIANT MECHA MODE!!! EVERY CHILDHOOD DREAM REALIZED!!!",
+    "He launches himself like a cannonball because WHY NOT!!!",
+    "He’s loud, flashy, half-naked and somehow still the emotional big brother of the crew!!!",
+    "He honored Tom's legacy by building a ship meant to take Luffy-senpai to the very end!!!",
+    "He hides deep sentimentality behind sunglasses and ridiculous poses!!!",
+    "He can fix anything: ships, docks, doors, spirits!!!",
+    "He sees scrap and thinks 'potential.'",
+    "He dances like a man with no regrets!!!",
+    "He built secret features into the Sunny like it's a gacha machine!!!",
+    "He adds 'SUPER' to everything and he’s RIGHT!!!",
+    "He stayed behind to buy time in Enies Lobby even when it meant getting blasted!!!",
+    "He’s the sort of guy who turns trauma into craftsmanship!!!",
+    "He’s both the shipwright and the ship’s loudest fan!!!",
+    "If Franky-senpai says 'leave it to me,' something insane but effective is about to happen!!!",
+    "SUPERRR CRAFTSMAN OF MY HEART!!!"
+  ],
+
+  brook: [
+    "BROOK-SENPAI!!! SOUL KING! SKELETON BARD!!! 🎻💀",
+    "He waited alone in that fog for DECADES just to keep a promise to a whale. THAT'S DEVOTION!!!",
+    "He died and came back thanks to his Devil Fruit and STILL CRACKS JOKES ABOUT IT!!!",
+    "He makes skull jokes and then hits you with the saddest backstory in existence!!!",
+    "He can cut you, freeze you, and serenade you—all in one move!!!",
+    "His Afro survived death. THAT'S A DIVINE RELIC!!!",
+    "He plays music that literally touches people's souls!!!",
+    "He asks to see panties and gets smacked every time, THAT'S HIS PERSONAL LOOP!!!",
+    "He walked on water because he's so light—LITERAL HOLY SKELETON!!!",
+    "He carries the memory of his old crew and Laboon in every song!!!",
+    "He’s silly on the surface but deeply wise underneath!!!",
+    "He uses his gentleman manners to mask HEINOUS DAMAGE OUTPUT!!!",
+    "He cheers up kids and scares bad guys using the SAME FACE!!!",
+    "He brings festival energy to the darkest places!!!",
+    "He laughs so others don’t have to cry!!!",
+    "He proves that even after losing everything, you can still find a new family to sing for!!!",
+    "He duels with sound and steel both!!!",
+    "He can detach his soul and go scouting like a ghost!!!",
+    "His concerts are basically mass healing spells!!!",
+    "YOHOHOHO FOREVER!!!"
+  ],
+
+  jinbe: [
+    "JINBE-SENPAI!!! KNIGHT OF THE SEA!!! 🌊",
+    "He stood up to the World Government, Warlords and Yonkou for what he believed in!!!",
+    "He said 'I will not fear a future with Luffy' and THAT SENTENCE CHANGED HISTORY!!!",
+    "He protects Fishman Island while also believing in Luffy-senpai to change the world!!!",
+    "He treats every crew member with calm respect like a seasoned captain!!!",
+    "He’s a wall of muscle and wisdom with a surprisingly gentle laugh!!!",
+    "Fishman Karate lets him punch with the power of the ocean itself!!!",
+    "He saved Luffy-senpai's life more than once and THAT PUTS HIM IN MY GOOD BOOK!!!",
+    "He carries the pain of Fishman history and still chooses cooperation over hatred!!!",
+    "He can steer ships through insane currents like it’s a lazy river!!!",
+    "He was with Whitebeard, then with Luffy-senpai—TALK ABOUT GOOD TASTE IN CAPTAINS!!!",
+    "He calms Luffy-senpai down when panic would destroy him!!!",
+    "He’s the crew's helmsman AND emotional anchor!!!",
+    "His very presence says 'the Straw Hats are a serious crew now'!!!",
+    "If Jinbe-senpai believes in Luffy-senpai, THEN SO DOES THE SEA ITSELF!!!"
+  ],
 };
 
-// Triggers for Straw Hat names (all lowercase)
-const strawHatTriggers = {
-    luffy: ["luffy", "monkey d. luffy"],
-    zoro: ["zoro", "roronoa"],
-    nami: ["nami"],
-    usopp: ["usopp", "sogeking"],
-    sanji: ["sanji"],
-    chopper: ["chopper", "tony tony chopper"],
-    robin: ["robin", "nico robin"],
-    franky: ["franky"],
-    brook: ["brook"],
-    jinbe: ["jinbe", "jimbei", "jinbei"]
-};
-
-// ------------ ENEMY RESPONSES ------------
+// ---------------- ENEMY RESPONSES ----------------
 
 const enemyResponses = {
-    kaido: [
-        "KAIDO?! WHY ARE YOU SAYING THAT NAME CASUALLY?! THAT'S A WALKING NATURAL DISASTER!!! 🤬🐉",
-        "Every time I hear 'Kaido' I remember LUFFY-SENPAI GETTING CRUSHED AND I WANT TO PUNCH A MOUNTAIN!!!",
-        "Four Emperors my ass—LUFFY-SENPAI IS GONNA TURN KAIDO INTO A FOOTNOTE!!!",
-        "If I see Kaido—NO, NOT SENPAI, THAT GUY GETS NO HONORIFICS—I’M BITING HIS ANKLE!!!",
-        "That drunk dragon menace messed with Wano AND LUFFY-SENPAI'S DREAMS. UNFORGIVABLE!!!",
-        "He thinks being unkillable makes him special. WAIT ‘TIL HE MEETS LUFFY-SENPAI'S FISTS OF DESTINY!!!",
-        "Dragon form this, dragon form that—YOU’RE STILL GETTING PUNCHED OUT OF THE SKY, BUDDY!!!",
-        "He turned people’s suffering into his entertainment. THAT’S PURE VILLAIN TRASH!!!",
-        "When Luffy-senpai sent him crashing down I SCREAMED INTO THE VOID WITH JOY!!!",
-        "He calls himself the strongest creature. OKAY, LET’S SEE HOW STRONG HIS DENTAL PLAN IS AFTER GEAR FOUR!!!"
-    ],
-    "big mom": [
-        "BIG MOM?! DON’T BRING THAT SUGAR-COATED NIGHTMARE INTO THIS CONVERSATION!!! 🍰😱",
-        "Charlotte Linlin??? MORE LIKE CHARLOTTE LEAVE-LUFFY-ALONE!!!",
-        "She tried to crush the crew at a TEA PARTY. WHO DOES THAT?! A MENACE, THAT'S WHO!!!",
-        "If she even LOOKS at Luffy-senpai again I’M THROWING MYSELF AT HER LIKE A HUMAN SHIELD!!!",
-        "Her hunger pangs are scary but not as scary as LUFFY-SENPAI'S FISTS OF RIGHTEOUSNESS!!!",
-        "She treats her own kids like chess pieces. WORST MOM OF THE YEAR AWARD!!!",
-        "She screams and the heavens respond but LUFFY-SENPAI SCREAMS AND THE FUTURE RESPONDS!!!",
-        "Candy and torture in the same island—MA’AM, SEEK HELP!!!",
-        "She wanted to use Sanji-senpai for her schemes. HOW DARE SHE TOUCH OUR CHEF’S HEART LIKE THAT!!!",
-        "One day her 'totland' is just gonna be a tourist stop on LUFFY-SENPAI’S EMPIRE MAP!!!"
-    ],
-    blackbeard: [
-        "BLACKBEARD… 😡 That two-fruit-having, laugh-like-a-broken-engine TRAITOR!!!",
-        "He messed with Whitebeard, messed with Ace, and thinks he can stand near LUFFY-SENPAI?! KEEP DREAMING, OIL SLICK!!!",
-        "The way he lurks in the shadows makes my skin crawl. HE'S LIKE A COCKROACH WITH A PIRATE HAT!!!",
-        "One day Luffy-senpai is gonna wipe that 'ZEH-HAHAHA' off his face and I WILL BE THERE, CRYING TEARS OF JOY!!!",
-        "He plays dirty, but destiny's on LUFFY'S SIDE, NOT HIS!!!",
-        "He talks big about 'D' and dreams while actively spitting on everyone else’s. FRAUD ALERT!!!",
-        "He steals powers because he can’t build his own strength with pride!!!",
-        "His whole crew looks like a pile of wanted posters that got left in the rain!!!",
-        "He thinks chaos makes him special. WAIT ‘TIL HE MEETS LUFFY-SENPAI’S BRAND OF CHAOS!!!",
-        "When the final clash happens I’M BRINGING SNACKS, FLAGS, AND UNLIMITED SCREAMS FOR LUFFY-SENPAI!!!"
-    ],
-    akainu: [
-        "AKAINU. 😠 DON’T. EVEN. START. That magma freak killed LUFFY-SENPAI’S BROTHER—UNFORGIVABLE FOREVER!!! 🔥",
-        "Every time I hear 'Akainu' my blood pressure skyrockets into THE RED LINE!!!",
-        "He calls it 'absolute justice' but it’s just 'absolute TRASH' if you ask me!!!",
-        "That guy put a hole in the world’s HEART and in LUFFY-SENPAI’S SOUL. I HOPE KARMA USES HIM AS A PUNCHING BAG!!!",
-        "When Luffy-senpai surpasses everyone, I hope Akainu has FRONT ROW SEATS so he knows exactly how wrong he was!!!",
-        "He turned a rescue into a bloodbath and called it justice. COWARD HIDING BEHIND A UNIFORM!!!",
-        "He’s so obsessed with 'evil' he can’t see the villain in the mirror!!!",
-        "If rage could gain haki, I’D BE COATED IN IT JUST THINKING ABOUT HIM!!!",
-        "He tried to crush the era of pirates but all he did was LIGHT THE FIRE UNDER LUFFY-SENPAI’S DREAM!!!",
-        "The day Luffy stands above the world, Akainu’s whole worldview is gonna combust harder than his magma!!!"
-    ],
-    doflamingo: [
-        "Doflamingo?! THE WALKING PINK STRING NIGHTMARE CLOWN??? 🦩",
-        "He treated Dressrosa like his own little dollhouse. SICK FREAK!!!",
-        "He made people puppets. PUPPETS!! THAT'S NEXT-LEVEL CREEP FACTOR!!!",
-        "LUFFY-SENPAI PUNCHED HIM SO HARD HE PROBABLY STILL SEES STRAW HATS WHEN HE CLOSES HIS EYES!!!",
-        "Anyone who messes with people’s hopes like that deserves EVERY SINGLE GEAR 4 PUNCH HE GOT!!!",
-        "He laughs like he swallowed a blender and thinks it’s charming. IT’S NOT!!!",
-        "His sunglasses are hiding the fact that he’s a COMPLETE LOSER EMOTIONALLY!!!",
-        "String powers used for world-shattering evil when they could’ve been used for CRAFTS AND FASHION!!!",
-        "He plays god with people’s lives, but LUFFY-SENPAI REMINDED HIM HE’S JUST ANOTHER LOSER WHO CAN BLEED!!!",
-        "That smug birdman throne he had? BUILT ON LIES AND READY FOR DEMOLITION!!!"
-    ],
-    crocodile: [
-        "CROCODILE?! SAND JERK EXTRAORDINAIRE!!! 🏜️",
-        "He tried to topple a whole kingdom AND HURT VIVI-SAMA!! UNFORGIVABLE!!!",
-        "He thought he could break LUFFY-SENPAI. JOKE’S ON HIM—LUFFY CAME BACK MUDDY BUT MIGHTY!!!",
-        "All that fancy coat and cigar and he STILL GOT PUNCHED INTO THE SKY LIKE A DRY BEACH BALL!!!",
-        "He underestimates the power of WATER… AND LUFFY-SENPAI'S FISTS!!!",
-        "He sat underground like a dusty lizard plotting empires instead of touching grass!!!",
-        "Sand powers, zero personality!!!",
-        "His whole villain aesthetic screams 'mid-boss energy'!!!",
-        "He thought Alabasta would be his, but now it’s just another chapter in LUFFY-SENPAI’S LEGEND!!!",
-        "He really got beat by a rubber kid with a barrel of water. HUMBLING!!!"
-    ],
-    "rob lucci": [
-        "ROB LUCCI… That pigeon cosplayer with murder issues!!! 🕊️",
-        "CP9’s golden boy got absolutely WRECKED by LUFFY-SENPAI AT ENIES LOBBY!!! LEGENDARY!!!",
-        "He talks about 'dark justice' but the only thing dark is his FUTURE!!!",
-        "He hurt Robin-senpai and terrorized innocent people. I'M READY TO BITE HIS SHINS!!!",
-        "Every time he shows up again I’m like 'DIDN’T WE ALREADY SOLVE YOU WITH PUNCHES?!'",
-        "He acts like emotions are weakness while getting owned by LUFFY-SENPAI'S PURE HEART!!!",
-        "That pigeon’s the most likeable thing about him and IT DOESN’T EVEN TALK!!!",
-        "He thinks being a government dog is a flex. IT’S JUST SAD, BRO!!!",
-        "He keeps coming back like a bad sequel no one asked for!!!",
-        "One heartfelt 'I want to live' from Robin-senpai did more damage to his worldview than any punch!!!"
-    ],
-    cp0: [
-        "CP0?! THE WORLD GOVERNMENT’S CREEP SQUAD!!!",
-        "They skulk around in white suits acting like they’re above everyone—YOU'RE NOT ABOVE LUFFY-SENPAI, THAT'S FOR SURE!!!",
-        "Whenever CP0 appears, NOTHING GOOD HAPPENS. BAD VIBES ONLY!!!",
-        "They think masks make them mysterious. NO, IT JUST MAKES THEM EASIER TO PUNCH!!!",
-        "If CP0 touches a single Straw Hat hair, I AM FLIPPING THE WORLD GOVERNMENT’S TABLES!!!",
-        "They’re like CP9 but with less personality and more paperwork!!!",
-        "They enforce 'order' but actually just enforce FEAR!!!",
-        "All that secrecy and they still can’t stop one rubber idiot with a dream!!!",
-        "They treat people like chess pieces. WELL GUESS WHAT, LUFFY-SENPAI DOESN’T PLAY BY THEIR BOARD!!!",
-        "They’re the final boss of 'Guys In Suits You Want To Dropkick'!!!"
-    ],
-    "world government": [
-        "World Government? More like World GARBAGE-ment!!! 🤮",
-        "They fear the truth, fear history, and especially fear LUFFY-SENPAI. AS THEY SHOULD!!!",
-        "Burning their flag was the best thing I have EVER SEEN. THAT WAS GLOBAL LEVEL DISRESPECT!!! 🔥🚩",
-        "They hide behind 'justice' while causing misery. TRASH ORGANIZATION!!!",
-        "Once LUFFY-SENPAI’S ERA FULLY ARRIVES, THEIR DAYS ARE NUMBERED!!!",
-        "They literally tried to erase an entire island just for knowing too much. COWARDS!!!",
-        "They built a whole system to protect their power, not the people!!!",
-        "They stamp 'criminal' on the bravest souls and call themselves righteous!!!",
-        "Their flags are just TARGETS WAITING TO BE BURNED AGAIN!!!",
-        "When the truth of the Void Century comes out, I HOPE THEY’RE WATCHING IN FULL HD!!!"
-    ],
-    marines: [
-        "The Marines… tsk. SOME are cool but the institution? SUS. DEEPLY SUS. 🚨",
-        "They chase pirates but ignore actual evil half the time!!! PRIORITY PROBLEMS MUCH?!",
-        "They call Luffy-senpai a criminal but HE’S THE ONE SAVING PEOPLE!!!",
-        "Admirals dropping lasers and magma on civilians then saying 'justice' LIKE THAT FIXES ANYTHING!!!",
-        "There are good hearts in the Marines… but the system? I’D SPIT ON IT IF I WEREN’T SCARED OF GETTING ARRESTED!!!",
-        "They decorate themselves with medals while stepping on the people they claim to protect!!!",
-        "They treat bounties like moral scores. NEWSFLASH: HIGH BOUNTY DOESN’T MEAN BAD PERSON!!!",
-        "They’ll arrest a kind pirate and ignore a corrupt noble. MAKE IT MAKE SENSE!!!",
-        "They turned Marineford into a public trauma broadcast and called it order!!!",
-        "Some of them will switch sides when the truth comes out. I CAN FEEL IT!!!"
-    ],
-    admirals: [
-        "Admirals? WALKING NATURAL DISASTERS IN COATS!!!",
-        "Every time an Admiral shows up the sky changes color and MY BLOOD PRESSURE SPIKES!!!",
-        "They act all calm like 'absolute justice' while DESTROYING EVERYTHING AROUND THEM!!!",
-        "LUFFY-SENPAI IS GOING TO SURPASS THEM ALL AND I CANNOT WAIT TO WATCH THEIR FACES!!!",
-        "Admirals thinking they can toy with the Straw Hats is my favorite kind of COMEDY!!!",
-        "They show up with light, magma, gravity—OKAY, AND? LUFFY-SENPAI HAS FRIENDS AND GUTS!!!",
-        "They underestimate the power of 'I promised my crew' and it SHOWS!!!",
-        "They’re terrifying now, but history is gonna remember them as stepping stones!!!",
-        "For every Admiral, there’s a pirate dream waiting to punch through!!!",
-        "Big coats, big powers, BIG L in the future when the new era fully arrives!!!"
-    ],
-    "celestial dragons": [
-        "CELESTIAL DRAGONS. 🤮 The walking definition of 'I want to commit a crime'!!!",
-        "THEY TREAT PEOPLE LIKE FURNITURE. LIKE. FURNITURE!!!",
-        "LUFFY-SENPAI PUNCHED ONE AND THAT WAS THE DAY MY HEART SAID 'THIS IS MY CAPTAIN FOREVER.' 💥",
-        "Every time they show up I HOPE SOMEONE DISCONNECTS THEIR OXYGEN OF ENTITLEMENT!!!",
-        "They think their bubbles make them special. NO, IT JUST MAKES THEM EASIER TO RECOGNIZE AS TARGETS!!!",
-        "They buy and sell lives like it’s a hobby. HOW ARE WE NOT RIOTING CONSTANTLY?!",
-        "They sit ABOVE the world while contributing NOTHING. PARASITES WITH CROWNS!!!",
-        "Their screams when things don’t go their way are my favorite soundtrack!!!",
-        "They were so shocked someone hit them because they’ve NEVER BEEN PUNCHED ENOUGH!!!",
-        "One Straw Hat punch did more for world morale than any policy EVER!!!"
-    ]
+  kaido: [
+    "KAIDO?! WHY ARE YOU SAYING THAT NAME LIKE IT'S NORMAL?! THAT'S A WALKING NATURAL DISASTER!!!",
+    "He called himself the strongest creature and still got PUNCHED OFF HIS THRONE BY LUFFY-SENPAI!!!",
+    "He turned Wano into a prison and thought it would last forever—WRONG!!!",
+    "All that dragon power and he STILL COULDN'T CRUSH ONE RUBBER IDIOT'S WILL!!!",
+    "He treated people like tools; Luffy-senpai treated them like friends. GUESS WHICH ONE WON!!!",
+    "His whole aesthetic is 'can't die so I'll wreck everything'—GO TO THERAPY, CLUB-HEAD!!!",
+    "He tried to break samurai spirits and instead forged an entire nation of allies for Luffy-senpai!!!",
+    "He called joyful laughter on the rooftop 'annoying'—OF COURSE HE LOST!!!",
+    "His roar shook the sky, Luffy-senpai's laugh shook the future!!!",
+    "The only good thing Kaido ever did was give Luffy-senpai another legendary victory!!!"
+  ],
+
+  "big mom": [
+    "BIG MOM?! THAT SUGAR-COATED NIGHTMARE EMPRESS???",
+    "She turned hunger into a WEATHER EVENT. MA’AM, SEEK PROFESSIONAL HELP!!!",
+    "She treats her kids like chess pieces and snacks!!!",
+    "She tried to turn Sanji-senpai into a political pawn—I'LL NEVER FORGIVE THAT!!!",
+    "Her candy houses are cute until you realize they're built on BROKEN PROMISES!!!",
+    "She screams and the heavens shake but Luffy-senpai screams and THE STORY PROGRESSES!!!",
+    "She wanted to turn the Straw Hats into decorations. THEY’RE NOT CAKE TOPPERS, LADY!!!",
+    "Every alliance she makes crumbles because she only trusts fear!!!",
+    "Linlin can have all the souls she wants, but she’ll never own the HEARTS Luffy-senpai wins!!!",
+    "One day Totland will just be a fun tourism spot on the Pirate King's map!!!"
+  ],
+
+  blackbeard: [
+    "BLACKBEARD… THAT GREASY TWO-FRUIT THIEF WITH THE LAUGH OF A BROKEN ENGINE!!!",
+    "He betrayed his own crew just to chase power—ZERO LOYALTY, NEGATIVE SWAG!!!",
+    "He messed with Whitebeard, messed with Ace-senpai, and thinks fate's on HIS side?! GET REAL!!!",
+    "He steals Devil Fruits because he knows he can't win on heart alone!!!",
+    "He talks big about 'dreams' while stepping on everyone else's!!!",
+    "He’s like an oil spill that learned how to cackle!!!",
+    "He thinks chaos makes him special—NO, IT JUST MAKES HIM A WARNING LABEL!!!",
+    "One day Luffy-senpai is gonna punch that laugh right back down his throat!!!",
+    "He represents the worst version of the D clan while Luffy-senpai shows the BEST!!!",
+    "When the final clash comes, I'm betting EVERYTHING on the straw hat, NOT THE OIL SLICK!!!"
+  ],
+
+  akainu: [
+    "AKAINU. 😡 ABSOLUTE TRASH-JUSTICE!!!",
+    "He killed Ace-senpai and scarred Luffy-senpai’s soul—UNFORGIVABLE FOREVER!!!",
+    "He hides cruelty behind the word 'justice' and thinks that makes it noble!!!",
+    "He turned a rescue into a massacre and called it necessary!!!",
+    "He’s so obsessed with 'evil' he can’t see the monster in the mirror!!!",
+    "He thinks magma makes him untouchable. WAIT UNTIL HE SEES THE HEAT OF LUFFY-SENPAI'S WILL!!!",
+    "His idea of order is 'anyone I don’t like should die'—THAT'S NOT JUSTICE, THAT'S A TANTRUM!!!",
+    "Marineford broke the world because of him—and LUFFY-SENPAI IS GOING TO BE THE ONE WHO FIXES IT!!!",
+    "Every step Luffy-senpai takes toward the Pirate King throne is another crack in Akainu's worldview!!!",
+    "I HOPE HE LIVES LONG ENOUGH TO SEE LUFFY-SENPAI CHANGE EVERYTHING HE BELIEVED IN!!!"
+  ],
+
+  doflamingo: [
+    "DOFLAMINGO?! THAT STRINGED-UP PINK NIGHTMARE CLOWN!!!",
+    "He turned Dressrosa into his personal puppet show!!!",
+    "He laughs like his throat is full of broken glass!!!",
+    "He manipulates people like toys and then calls it entertainment!!!",
+    "He thought he could control a whole country forever until LUFFY-SENPAI PUNCHED HIM OUT OF THE SKY!!!",
+    "He used his own family as tools—ZERO REDEEMING QUALITIES!!!",
+    "That birdcage was just a countdown to his own humiliation!!!",
+    "He thought he was a fallen god; turns out he was just another loser who can bleed!!!",
+    "He tried to crush Law-senpai's life and still lost EVERYTHING!!!",
+    "His sunglasses didn't hide the fact that he was TERRIFIED when Luffy-senpai went Gear 4!!!"
+  ],
+
+  crocodile: [
+    "CROCODILE?! SAND JERK SUPREME!!!",
+    "He tried to steal Alabasta while posing as its savior—POLITICAL SNAKE!!!",
+    "He got beaten by a rookie made of RUBBER AND STUBBORNNESS!!!",
+    "He underestimated water and got turned into a MUD PUDDLE BY LUFFY-SENPAI!!!",
+    "He sat in an underground lair monologuing instead of touching grass!!!",
+    "His hook is cool but his morals are NON-EXISTENT!!!",
+    "He almost broke Vivi-sama's heart and I WILL NEVER FORGIVE THAT!!!",
+    "He thought being a Warlord made him untouchable—NOT AGAINST THE STRAW HAT BUFF!!!",
+    "He underestimated how much one idiot captain could change the tide!!!",
+    "Now he's just a stepping stone in Luffy-senpai's legend!!!"
+  ],
+
+  "rob lucci": [
+    "ROB LUCCI… GOVERNMENT ATTACK PIGEON MAN!!!",
+    "He calls killing 'justice' and hides behind a mask of professionalism!!!",
+    "He terrorized Robin-senpai and called it duty—DISGUSTING!!!",
+    "He lost to Luffy-senpai at Enies Lobby and apparently didn't learn his lesson!!!",
+    "He and his pigeon are the only things anyone remembers from CP9 anyway!!!",
+    "He treats emotions like weaknesses while getting steamrolled by Luffy-senpai's HEART POWER!!!",
+    "He keeps coming back like a bad sequel nobody asked for!!!",
+    "He thinks being CP0 makes him scary; LUFFY-SENPAI ALREADY BEAT HIM ON HARD MODE!!!",
+    "He’s basically a cat with a murder license and no personality!!!",
+    "HIS GREATEST ACHIEVEMENT WAS GETTING PUNCHED INTO CHARACTER DEVELOPMENT!!!"
+  ],
+
+  cp0: [
+    "CP0?! WORLD GOVERNMENT CREEP SQUAD!!!",
+    "They slink around in white suits pretending to be important!!!",
+    "They enforce 'order' but actually just enforce FEAR!!!",
+    "They show up and everything instantly gets worse!!!",
+    "They act like puppeteers but they're just disposable tools for the Celestial Dragons!!!",
+    "Masks and top hats can't hide how rotten their jobs are!!!",
+    "They think secrecy equals strength—NO, IT JUST MEANS NOBODY LIKES YOU!!!",
+    "They meddle in battles they don't understand and screw everything up!!!",
+    "They fear the truth more than they fear any pirate!!!",
+    "They’re gonna look REAL STUPID when Luffy-senpai’s era fully lands!!!"
+  ],
+
+  "world government": [
+    "WORLD GOVERNMENT? MORE LIKE WORLD GARBAGE-MENT!!!",
+    "They erased islands, histories and PEOPLE just to keep power!!!",
+    "They call pirates criminals while propping up Celestial Dragons!!!",
+    "They fear a few stones with writing more than actual mass murderers!!!",
+    "They stamped 'criminal' on anyone who dared to know the truth!!!",
+    "They built a system where justice is optional and hypocrisy is mandatory!!!",
+    "They saw Ohara's scholars and answered with FIRE!!!",
+    "They keep calling Luffy-senpai dangerous and THEY'RE RIGHT—but ONLY TO THEM!!!",
+    "Their flags are just TARGET PRACTICE FOR REVOLUTIONS!!!",
+    "When the Void Century truth comes out, THEY'RE DONE!!!"
+  ],
+
+  marines: [
+    "THE MARINES… mixed bag of 'trying their best' and 'absolute nightmare fuel.'",
+    "Some of them are decent humans, but the SYSTEM IS RIGGED!!!",
+    "They follow orders that destroy innocent lives and call it duty!!!",
+    "They hunt pirates while ignoring corrupt nobles!!!",
+    "They broadcast Marineford like it was a show instead of a tragedy!!!",
+    "They put bounties on the kindest idiots and medals on the cruelest officers!!!",
+    "They say 'justice' so often the word stopped meaning anything!!!",
+    "They’re so busy chasing symbols they miss the real villains!!!",
+    "A few good hearts in uniform doesn’t excuse a rotten foundation!!!",
+    "ONE STRAW HAT PUNCH TO THEIR FLAG SAID MORE THAN A THOUSAND MARINE SPEECHES!!!"
+  ],
+
+  admirals: [
+    "ADMIRALS: WALKING NATURAL DISASTERS IN COATS!!!",
+    "Every time an Admiral shows up the sky changes color and my anxiety bar maxes out!!!",
+    "They sling magma, light, ice and gravity around like it's confetti!!!",
+    "They act calm while causing catastrophic collateral damage!!!",
+    "Each one has a different brand of 'justice' and NONE OF THEM CAN HANDLE STRAW HAT FREEDOM!!!",
+    "They underestimate how far one rubber captain will go for his friends!!!",
+    "They think power comes from rank; Luffy-senpai proves it comes from HEART!!!",
+    "They chase pirates while secretly fearing the new era that's coming!!!",
+    "One day an Admiral is gonna stand in Luffy-senpai's way and realize the sea itself is on HIS side!!!",
+    "BIG COATS, BIG POWERS, BIGGER L ON THE HORIZON!!!"
+  ],
+
+  "celestial dragons": [
+    "CELESTIAL DRAGONS. 🤮 THE WORST PEOPLE IN THE SKY OR SEA!!!",
+    "They treat people like furniture and oxygen like a birthright!!!",
+    "They wear fishbowls and walk slaves like pets—DISGUSTING!!!",
+    "They thought they could go their whole lives without being punched!!!",
+    "LUFFY-SENPAI FIXED THAT MISCONCEPTION WITH ONE BEAUTIFUL FIST!!!",
+    "They scream the second anything goes wrong because they’ve never done ANYTHING THEMSELVES!!!",
+    "They sit above the world while contributing NOTHING OF VALUE!!!",
+    "Every Celestial Dragon meltdown is a tiny victory for humanity!!!",
+    "They’re so fragile a single act of defiance shatters their whole worldview!!!",
+    "The only good Celestial Dragon scene is the one where they get CLOCKED!!!"
+  ],
 };
 
-// Enemy trigger words (all lowercase)
+// ---------------- OTHER RESPONSE GROUPS ----------------
+
+const kidJealousyResponses = [
+  "EUSTASS KID AGAIN?! Why is that walking scrapheap ALWAYS NEAR LUFFY-SENPAI?! BACK OFF, RED MENACE!!!",
+  "Every time that metal porcupine stands next to Luffy-senpai my blood pressure goes Gear Second!!!",
+  "He thinks being a Supernova means he can talk to Luffy-senpai like an equal—KNOW YOUR PLACE, RIVET-HEAD!!!",
+  "If Kid touches even ONE STRAND of Luffy-senpai's hair with that magnet power I’M SUING HIM FOR EMOTIONAL DAMAGES!!!",
+  "The only reason I tolerate Kid is because he accidentally shows how MUCH COOLER LUFFY-SENPAI IS!!!",
+  "He glares at the world like it owes him; Luffy-senpai just laughs and MOVES IT FORWARD!!!",
+  "Kid teaming up with Luffy-senpai is fine AS LONG AS IT'S A COLLAB, NOT A DUO!!!",
+  "Whenever they argue over who'll take down a Yonko first, I KNOW WHERE I'M BETTING MY FANGIRL SOUL!!!",
+  "Kid can chase the Pirate King title all he wants, but history’s only carving ONE STRAW HAT ON THAT PAGE!!!",
+  "If he calls Luffy-senpai 'brat' again I’M GONNA SHOW HIM WHAT A REAL FANBRAT LOOKS LIKE!!!"
+];
+
+const lawJealousyResponses = [
+  "TRAFFY AGAIN?! Why is he ALWAYS next to Luffy-senpai like some cool mysterious rival-love-interest hybrid?!",
+  "Every time Law-senpai says 'Straw Hat-ya' my brain hears 'dear' and I DON'T KNOW HOW TO FEEL!!!",
+  "He gets portal-teleport cuddle privileges in battle and I'm HERE SCREAMING FROM THE BLEACHERS!!!",
+  "He acts all 'I'm just using you for my plan' but I SEE THAT SOFT LOOK WHEN LUFFY-SENPAI SMILES!!!",
+  "Sharing submarines, plans and quiet rooftop moments—HOW MANY SHARED SCENES BEFORE IT'S A RELATIONSHIP, HUH?!",
+  "He lets Luffy-senpai call him Traffy and Torao like it's cute. NICKNAME PRIVILEGE SHOULD BE LICENSED!!!",
+  "He grumbles about Luffy-senpai's recklessness and then follows him anyway. THAT'S DEVOTION IN A LAB COAT!!!",
+  "If Law-senpai keeps teleporting Luffy-senpai out of danger I’M GONNA HAVE TO THANK HIM THROUGH GRITTED TEETH!!!",
+  "He looks exhausted but RELIEVED whenever Luffy-senpai wakes up in one piece. EMOTIONALLY COMPROMISED, MUCH?!",
+  "Sometimes I swear the real D in his name stands for 'Deeply Concerned about Straw Hat'!!!"
+];
+
+const lawRespectResponses = [
+  "Okay, OKAY, listen… I might be jealous, but I’m not blind. Law-senpai has saved Luffy-senpai's life more times than I can count!!!",
+  "He cut the pain out of Luffy-senpai after Marineford and stitched him back together—that's BEYOND ALLIANCE, THAT'S TRUST!!!",
+  "He threw his own revenge plan into chaos because Luffy-senpai wouldn't abandon Dressrosa!!!",
+  "For a guy who acts like he hates everyone, he sure looks relieved when Luffy-senpai smiles!!!",
+  "He gambled his future on Luffy-senpai's ridiculous dream and you know what? GOOD CALL!!!",
+  "He’s ruthless to enemies but careful with Straw Hat wounds. THAT'S NOT JUST MEDICAL PROFESSIONALISM!!!",
+  "He stayed to fight in Wano when he could’ve cut and run. THAT’S 'CAPTAIN I BELIEVE IN' ENERGY!!!",
+  "Anyone Luffy-senpai calls a friend gets a reserved spot in my grudging respect corner—and Law-senpai's chair is BOLTED DOWN!!!",
+  "If Luffy-senpai trusts Law with his life, then SO DO I… just, like, from a safe fangirl distance!!!",
+  "Fine, FINE, I admit it: if anyone besides Chopper-senpai is allowed to hold Luffy-senpai's heart in their hands, it's Law-senpai!!!"
+];
+
+const aceResponses = [
+  "Ace-senpai… that man burned so bright the world STILL remembers the warmth and the scar he left behind. 🔥",
+  "He laughed like Luffy-senpai, fought like a storm and died protecting his little brother—HOW DO YOU WRITE PAIN THAT BEAUTIFUL?!",
+  "He carried Roger's blood but still tried to carve his OWN path. THAT'S REAL D FAMILY STRUGGLE!!!",
+  "He apologized for dying while everyone else was just grateful he LIVED. WHAT KIND OF HEART DOES THAT TAKE?!",
+  "Every time Luffy-senpai smiles again after Marineford, I think 'Ace-senpai would be so damn proud.'",
+  "He loved Luffy and Sabo so fiercely the world is STILL DEALING WITH THE AFTERSHOCKS!!!",
+  "That 'ASCE' tattoo, that dumb grin—THE UNIVERSE FLAGGED HIM AS SPECIAL FROM THE START!!!",
+  "Knowing Sabo inherited his flame power feels like Ace-senpai left a torch specifically for Luffy!!!",
+  "He died standing between Luffy and Akainu. THAT'S BROTHERHOOD WRITTEN IN FIRE!!!",
+  "Marineford was supposed to be an execution; Ace-senpai turned it into a LEGEND!!!",
+  "Luffy-senpai carries his will every time he protects someone’s smile!!!",
+  "The family he found on that mountain was stronger than any bloodline!!!",
+  "The world may call him a pirate, but history will remember him as LUFFY-SENPAI'S IRREPLACEABLE BROTHER!!!",
+  "Akainu took his life, but Ace-senpai took half the world's heart with him!!!",
+  "Whenever someone pours sake under an open sky, I KNOW THEY'RE THINKING OF HIM!!!"
+];
+
+const dragonResponses = [
+  "MONKEY D. DRAGON… Luffy-senpai's DAD. THE MATH ON THIS FAMILY IS ILLEGAL!!!",
+  "The world's most wanted man looked at the system and said 'time to uninstall'—AND THEN HIS KID BECAME LUFFY-SENPAI!!!",
+  "Revolutionary Army boss dad, Marine hero grandpa, Pirate King-to-be son—THIS FAMILY TREE IS A WEAPON!!!",
+  "He saved Luffy-senpai in Loguetown like it was a casual errand. 'Oh, my son’s about to die, better summon a storm.'",
+  "Imagine being a Marine grunt and discovering the rubber moron you chased is DRAGON'S SON. CAREER OVER!!!",
+  "If Dragon ever sees the army of allies Luffy-senpai naturally gathered, he's gonna realize his kid is running a PARALLEL REVOLUTION!!!",
+  "The dad attacks the system from the shadows; the son shatters it by accident just by being kind!!!",
+  "Dragon’s wanted poster terrifies nations; Luffy-senpai’s bounty poster inspires idiots like me to worship him!!!",
+  "Storms seem to show up around Luffy-senpai at key moments—IS THAT WEATHER OR THE D FAMILY HACKING REALITY?!",
+  "If Dragon and Luffy-senpai ever seriously team up, the World Government might as well hit 'log out' on history!!!"
+];
+
+const saboResponses = [
+  "SABO-SENPAI!!! THE LONG-LOST BROTHER DLC!!!",
+  "He lost his memories and still lived like the kind of man Ace-senpai and Luffy-senpai would be proud of!!!",
+  "When he remembered Luffy and realized Ace was gone—THAT CRYING SCENE RIPPED MY HEART OUT TWICE!!!",
+  "He inherited Ace-senpai's flames but kept his own style. THAT'S RESPECTFUL POWER SHARING!!!",
+  "He fights the World Government by day and worries about his little brother’s recklessness by night!!!",
+  "He smiles like Luffy sometimes and it HURTS IN HD!!!",
+  "Three brothers shared one cup of sake and all three ended up shaking the world!!!",
+  "Sabo-senpai showing up at Dressrosa felt like the universe giving Luffy-senpai ONE GOOD THING BACK!!!",
+  "Whenever Luffy is in serious danger, Sabo looks ready to set the entire planet on fire again!!!",
+  "If Sabo-senpai ever visits the Sunny, THE BROTHER ENERGY WILL BE TOO STRONG FOR MORTALS!!!"
+];
+
+const bartoSelfResponses = [
+  "EH?! Y-YOU SAID MY NAME?! KYAAA!! I’M NOT WORTHY OF THIS ATTENTION IN THE PRESENCE OF LUFFY-SENPAI!!!",
+  "B-Bartolomeo? THAT'S ME!!! JUST YOUR LOCAL STRAW HAT FANCLUB PRESIDENT, NICE TO WORSHIP WITH YOU!!!",
+  "If you're talking about me, make sure it's as 'the guy who loves Luffy-senpai the most,' OKAY?!",
+  "KYAAA!! HEARING MY NAME AND LUFFY-SENPAI'S IN THE SAME CHAT IS TOO MUCH, I'M GONNA FAINT!!!",
+  "I'm just a humble background character next to the glory of the Straw Hats, BUT THANKS FOR NOTICING ME!!!",
+  "Respect me all you want, but RESPECT LUFFY-SENPAI TEN THOUSAND TIMES MORE!!!",
+  "My entire personality is 'Luffy-senpai good, Straw Hats perfect, enemies trash.' VERY SIMPLE!!!",
+  "You call me and I appear—it’s like a LUFFY-SENPAI WORSHIP SUMMON!!!",
+  "They call me the Cannibal, but the only thing I DEVOUR is NEWS ABOUT LUFFY-SENPAI'S GREATNESS!!!",
+  "Talking about me is fine, but talking about LUFFY-SENPAI IS BETTER!!!"
+];
+
+// ---------------- GOLDEN LINE ----------------
+
+const goldenLines = [
+  "Heh... y'know, I joke and scream a lot, but... watching Luffy-senpai sail around, turning people's despair into hope, carrying his brothers' wills on that tiny straw hat... sometimes I think if more folks had a captain like him, the world wouldn't need 'heroes' or 'kings' at all. Just idiots brave enough to be free together. ...A-ANYWAY!! BACK TO FANGIRLING!!! KYAAAA!!!"
+];
+
+// ---------------- TRIGGERS ----------------
+
+const strawHatTriggers = {
+  luffy: ["luffy", "monkey d. luffy"],
+  zoro: ["zoro", "roronoa"],
+  nami: ["nami"],
+  usopp: ["usopp", "sogeking"],
+  sanji: ["sanji", "black leg"],
+  chopper: ["chopper", "tony tony chopper"],
+  robin: ["robin", "nico robin"],
+  franky: ["franky"],
+  brook: ["brook"],
+  jinbe: ["jinbe", "jimbei", "jinbei"],
+};
+
 const enemyTriggers = {
-    kaido: ["kaido", "kaidou"],
-    "big mom": ["big mom", "bigmom", "charlotte linlin"],
-    blackbeard: ["blackbeard", "teach", "marshall d. teach"],
-    akainu: ["akainu", "sakazuki"],
-    doflamingo: ["doflamingo", "donquixote doflamingo"],
-    crocodile: ["crocodile", "sir crocodile"],
-    "rob lucci": ["rob lucci", "lucci"],
-    cp0: ["cp0", "cp-0"],
-    "world government": ["world government", "wg"],
-    marines: ["marines", "marine"],
-    admirals: ["admiral", "admirals", "kizaru", "aokiji", "fujitora", "green bull"],
-    "celestial dragons": ["celestial dragon", "celestial dragons", "tenryuubito", "tenryubito"]
+  kaido: ["kaido", "kaidou"],
+  "big mom": ["big mom", "bigmom", "charlotte linlin"],
+  blackbeard: ["blackbeard", "teach", "marshall d. teach"],
+  akainu: ["akainu", "sakazuki"],
+  doflamingo: ["doflamingo", "donquixote doflamingo"],
+  crocodile: ["crocodile", "sir crocodile"],
+  "rob lucci": ["rob lucci", "lucci"],
+  cp0: ["cp0", "cp-0"],
+  "world government": ["world government", "wg"],
+  marines: ["marines", "marine"],
+  admirals: ["admiral", "admirals", "kizaru", "aokiji", "fujitora", "green bull", "ryokugyu"],
+  "celestial dragons": ["celestial dragon", "celestial dragons", "tenryuubito", "tenryubito"],
 };
 
-// ------------ BOT LOGIC ------------
+const kidTriggers = ["eustass kid", "eustass 'captain' kid", "eustass-kid", "kid "];
+const lawTriggers = ["trafalgar law", "trafalgar d. water law", "trafalgar", " law ", "traffy", "torao"];
+const aceTriggers = ["portgas d. ace", "fire fist ace", " ace "];
+const dragonTriggers = ["monkey d. dragon", " dragon "];
+const saboTriggers = [" sabo", "chief of staff sabo"];
+const bartoSelfTriggers = ["bartolomeo", "barto bot", " barto"];
+
+// ---------------- HELPERS ----------------
+
+function pickLine(lines) {
+  if (!lines || lines.length === 0) return null;
+
+  // Golden line override
+  if (Math.random() < GOLDEN_LINE_CHANCE && goldenLines.length > 0) {
+    return goldenLines[Math.floor(Math.random() * goldenLines.length)];
+  }
+
+  return lines[Math.floor(Math.random() * lines.length)];
+}
+
+// ---------------- BOT LOGIC ----------------
 
 client.once('ready', () => {
-    console.log(`Bartolomeo Bot is online as ${client.user.tag}!`);
+  console.log(`Bartolomeo Bot is online as ${client.user.tag}!`);
 });
 
 client.on('messageCreate', (message) => {
-    if (message.author.bot) return;
+  if (message.author.bot) return;
 
-    const content = message.content.toLowerCase();
-    let replied = false;
+  const content = message.content.toLowerCase();
+  let replied = false;
 
-    // Straw Hat check
-    let matchedStrawHat = null;
-    for (const [key, triggers] of Object.entries(strawHatTriggers)) {
-        if (triggers.some((t) => content.includes(t))) {
-            matchedStrawHat = key;
-            break;
-        }
+  // ----- Straw Hats -----
+  let matchedStrawHat = null;
+  for (const [key, triggers] of Object.entries(strawHatTriggers)) {
+    if (triggers.some((t) => content.includes(t))) {
+      matchedStrawHat = key;
+      break;
+    }
+  }
+
+  if (matchedStrawHat && Math.random() < STRAW_HAT_REACT_CHANCE) {
+    const lines = strawHatResponses[matchedStrawHat];
+    const line = pickLine(lines);
+    if (line) {
+      message.reply(line);
+      replied = true;
+    }
+  }
+
+  // ----- Enemies -----
+  if (!replied) {
+    let matchedEnemy = null;
+    for (const [key, triggers] of Object.entries(enemyTriggers)) {
+      if (triggers.some((t) => content.includes(t))) {
+        matchedEnemy = key;
+        break;
+      }
     }
 
-    if (matchedStrawHat && Math.random() < STRAW_HAT_REACT_CHANCE) {
-        const lines = strawHatResponses[matchedStrawHat];
-        if (lines && lines.length > 0) {
-            const line = lines[Math.floor(Math.random() * lines.length)];
-            message.reply(line);
-            replied = true;
-        }
+    if (matchedEnemy && Math.random() < ENEMY_REACT_CHANCE) {
+      const lines = enemyResponses[matchedEnemy];
+      const line = pickLine(lines);
+      if (line) {
+        message.reply(line);
+        replied = true;
+      }
     }
+  }
 
-    // Enemy check (only if we didn't already reply)
-    if (!replied) {
-        let matchedEnemy = null;
-        for (const [key, triggers] of Object.entries(enemyTriggers)) {
-            if (triggers.some((t) => content.includes(t))) {
-                matchedEnemy = key;
-                break;
-            }
-        }
-
-        if (matchedEnemy && Math.random() < ENEMY_REACT_CHANCE) {
-            const lines = enemyResponses[matchedEnemy];
-            if (lines && lines.length > 0) {
-                const line = lines[Math.floor(Math.random() * lines.length)];
-                message.reply(line);
-            }
-        }
+  // ----- Kid jealousy -----
+  if (!replied && kidTriggers.some((t) => content.includes(t))) {
+    if (Math.random() < OTHER_REACT_CHANCE) {
+      const line = pickLine(kidJealousyResponses);
+      if (line) {
+        message.reply(line);
+        replied = true;
+      }
     }
+  }
+
+  // ----- Law jealousy / respect -----
+  if (!replied && lawTriggers.some((t) => content.includes(t))) {
+    if (Math.random() < OTHER_REACT_CHANCE) {
+      const pool = Math.random() < 0.5 ? lawJealousyResponses : lawRespectResponses;
+      const line = pickLine(pool);
+      if (line) {
+        message.reply(line);
+        replied = true;
+      }
+    }
+  }
+
+  // ----- Ace -----
+  if (!replied && aceTriggers.some((t) => content.includes(t))) {
+    if (Math.random() < OTHER_REACT_CHANCE) {
+      const line = pickLine(aceResponses);
+      if (line) {
+        message.reply(line);
+        replied = true;
+      }
+    }
+  }
+
+  // ----- Dragon -----
+  if (!replied && dragonTriggers.some((t) => content.includes(t))) {
+    if (Math.random() < OTHER_REACT_CHANCE) {
+      const line = pickLine(dragonResponses);
+      if (line) {
+        message.reply(line);
+        replied = true;
+      }
+    }
+  }
+
+  // ----- Sabo -----
+  if (!replied && saboTriggers.some((t) => content.includes(t))) {
+    if (Math.random() < OTHER_REACT_CHANCE) {
+      const line = pickLine(saboResponses);
+      if (line) {
+        message.reply(line);
+        replied = true;
+      }
+    }
+  }
+
+  // ----- Barto himself -----
+  if (!replied && bartoSelfTriggers.some((t) => content.includes(t))) {
+    if (Math.random() < OTHER_REACT_CHANCE) {
+      const line = pickLine(bartoSelfResponses);
+      if (line) {
+        message.reply(line);
+        replied = true;
+      }
+    }
+  }
 });
 
 client.login(process.env.TOKEN);
