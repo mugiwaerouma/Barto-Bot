@@ -635,116 +635,34 @@ client.once("ready", () => {
   setInterval(() => setNextStatus(client), 24 * 60 * 60 * 1000);
 });
 
-client.on('messageCreate', (message) => {
+client.on("messageCreate", (message) => {
   if (message.author.bot) return;
 
-  const content = message.content.toLowerCase();
-  let replied = false;
+  const contentLower = message.content.toLowerCase();
+  const candidateResponses = [];
 
-  // ----- Straw Hats -----
-  let matchedStrawHat = null;
-  for (const [key, triggers] of Object.entries(strawHatTriggers)) {
-    if (triggers.some((t) => content.includes(t))) {
-      matchedStrawHat = key;
-      break;
-    }
+  // ...all your other includes & triggers...
+
+  if (contentLower.includes("ace")) {
+    candidateResponses.push(...aceResponses);
   }
 
-  if (matchedStrawHat && Math.random() < STRAW_HAT_REACT_CHANCE) {
-    const lines = strawHatResponses[matchedStrawHat];
-    const line = pickLine(lines);
-    if (line) {
-      message.reply(line);
-      replied = true;
-    }
+  if (contentLower.includes("dragon")) {
+    candidateResponses.push(...dragonResponses);
   }
 
-  // ----- Enemies -----
-  if (!replied) {
-    let matchedEnemy = null;
-    for (const [key, triggers] of Object.entries(enemyTriggers)) {
-      if (triggers.some((t) => content.includes(t))) {
-        matchedEnemy = key;
-        break;
-      }
-    }
-
-    if (matchedEnemy && Math.random() < ENEMY_REACT_CHANCE) {
-      const lines = enemyResponses[matchedEnemy];
-      const line = pickLine(lines);
-      if (line) {
-        message.reply(line);
-        replied = true;
-      }
-    }
+  if (contentLower.includes("sabo")) {
+    candidateResponses.push(...saboResponses);
   }
 
-  // ----- Kid jealousy -----
-  if (!replied && kidTriggers.some((t) => content.includes(t))) {
-    if (Math.random() < OTHER_REACT_CHANCE) {
-      const line = pickLine(kidJealousyResponses);
-      if (line) {
-        message.reply(line);
-        replied = true;
-      }
-    }
+  if (contentLower.includes("buggy")) {
+    candidateResponses.push(...buggyResponses);
   }
 
-  // ----- Law jealousy / respect -----
-  if (!replied && lawTriggers.some((t) => content.includes(t))) {
-    if (Math.random() < OTHER_REACT_CHANCE) {
-      const pool = Math.random() < 0.5 ? lawJealousyResponses : lawRespectResponses;
-      const line = pickLine(pool);
-      if (line) {
-        message.reply(line);
-        replied = true;
-      }
-    }
+  if (contentLower.includes("shanks") || contentLower.includes("red-hair")) {
+    candidateResponses.push(...shanksResponses);
   }
 
-  // ----- Ace -----
-  if (!replied && aceTriggers.some((t) => content.includes(t))) {
-    if (Math.random() < OTHER_REACT_CHANCE) {
-      const line = pickLine(aceResponses);
-      if (line) {
-        message.reply(line);
-        replied = true;
-      }
-    }
-  }
-
-  // ----- Dragon -----
-  if (!replied && dragonTriggers.some((t) => content.includes(t))) {
-    if (Math.random() < OTHER_REACT_CHANCE) {
-      const line = pickLine(dragonResponses);
-      if (line) {
-        message.reply(line);
-        replied = true;
-      }
-    }
-  }
-
-  // ----- Sabo -----
-  if (!replied && saboTriggers.some((t) => content.includes(t))) {
-    if (Math.random() < OTHER_REACT_CHANCE) {
-      const line = pickLine(saboResponses);
-      if (line) {
-        message.reply(line);
-        replied = true;
-      }
-    }
-  }
-
-  // ----- Barto himself -----
-  if (!replied && bartoSelfTriggers.some((t) => content.includes(t))) {
-    if (Math.random() < OTHER_REACT_CHANCE) {
-      const line = pickLine(bartoSelfResponses);
-      if (line) {
-        message.reply(line);
-        replied = true;
-      }
-    }
-  }
 });
 
 client.login(process.env.TOKEN);
