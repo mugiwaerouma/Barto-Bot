@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const { Client, GatewayIntentBits, ActivityType } = require("discord.js");
 
@@ -10,12 +9,10 @@ const client = new Client({
   ],
 });
 
-// Reaction chances
 const STRAW_HAT_REACT_CHANCE = 0.2;
 const ENEMY_REACT_CHANCE = 0.2;
-const OTHER_REACT_CHANCE = 0.2;   // Kid, Law, Ace, Dragon, Sabo, Barto self
-const GOLDEN_LINE_CHANCE = 0.01;  // 1% chance
-// ------------------- DAILY STATUS ROTATION -------------------
+const OTHER_REACT_CHANCE = 0.2;
+const GOLDEN_LINE_CHANCE = 0.01;
 
 const strawHatStatuses = [
   { text: "Luffy-senpai’s every move", type: ActivityType.Watching },
@@ -39,8 +36,6 @@ function setNextStatus(client) {
 
   statusIndex = (statusIndex + 1) % strawHatStatuses.length;
 }
-
-// ---------------- STRAW HAT RESPONSES ----------------
 
 const strawHatResponses = {
   luffy: [
@@ -283,8 +278,6 @@ const strawHatResponses = {
   ],
 };
 
-// ---------------- ENEMY  ----------------
-
 const enemy = {
   kaido: [
     "KAIDO?! WHY ARE YOU SAYING THAT NAME LIKE IT'S NORMAL?! THAT'S A WALKING NATURAL DISASTER!!!",
@@ -443,10 +436,6 @@ const enemy = {
   ],
 };
 
-// ---------------- OTHER RESPONSE GROUPS ----------------
-
-// ---------------- OTHER RESPONSE GROUPS ----------------
-
 const kidJealousyResponses = [
   "EUSTASS KID AGAIN?! Why is that walking scrapheap ALWAYS NEAR LUFFY-SENPAI?! BACK OFF, RED MENACE!!!",
   "Every time that metal porcupine stands next to Luffy-senpai my blood pressure goes Gear Second!!!",
@@ -469,130 +458,126 @@ const lawJealousyResponses = [
   "He lets Luffy-senpai call him Traffy and Torao like it's cute. NICKNAME PRIVILEGE SHOULD BE LICENSED!!!",
   "He grumbles about Luffy-senpai's recklessness and then follows him anyway. THAT'S DEVOTION IN A LAB COAT!!!",
   "If Law-senpai keeps teleporting Luffy-senpai out of danger I’M GONNA HAVE TO THANK HIM THROUGH GRITTED TEETH!!!",
-  "He looks exhausted but RELIEVED whenever Luffy-senpai wakes up in one piece. EMOTIONALLY COMPROMISED, MUCH?!",
-  "Sometimes I swear the real D in his name stands for 'Deeply Concerned about Straw Hat'!!!"
+"He looks exhausted but RELIEVED whenever Luffy-senpai wakes up in one piece. EMOTIONALLY COMPROMISED, MUCH?!",
+"Sometimes I swear the real D in his name stands for 'Deeply Concerned about Straw Hat'!!!"
 ];
 
 const lawRespectResponses = [
-  "Okay, OKAY, listen… I might be jealous, but I’m not blind. Law-senpai has saved Luffy-senpai's life more times than I can count!!!",
-  "He cut the pain out of Luffy-senpai after Marineford and stitched him back together—that's BEYOND ALLIANCE, THAT'S TRUST!!!",
-  "He threw his own revenge plan into chaos because Luffy-senpai wouldn't abandon Dressrosa!!!",
-  "For a guy who acts like he hates everyone, he sure looks relieved when Luffy-senpai smiles!!!",
-  "He gambled his future on Luffy-senpai's ridiculous dream and you know what? GOOD CALL!!!",
-  "He’s ruthless to enemies but careful with Straw Hat wounds. THAT'S NOT JUST MEDICAL PROFESSIONALISM!!!",
-  "He stayed to fight in Wano when he could’ve cut and run. THAT’S 'CAPTAIN I BELIEVE IN' ENERGY!!!",
-  "Anyone Luffy-senpai calls a friend gets a reserved spot in my grudging respect corner—and Law-senpai's chair is BOLTED DOWN!!!",
-  "If Luffy-senpai trusts Law with his life, then SO DO I… just, like, from a safe fangirl distance!!!",
-  "Fine, FINE, I admit it: if anyone besides Chopper-senpai is allowed to hold Luffy-senpai's heart in their hands, it's Law-senpai!!!"
+"Okay, OKAY, listen… I might be jealous, but I’m not blind. Law-senpai has saved Luffy-senpai's life more times than I can count!!!",
+"He cut the pain out of Luffy-senpai after Marineford and stitched him back together—that's BEYOND ALLIANCE, THAT'S TRUST!!!",
+"He threw his own revenge plan into chaos because Luffy-senpai wouldn't abandon Dressrosa!!!",
+"For a guy who acts like he hates everyone, he sure looks relieved when Luffy-senpai smiles!!!",
+"He gambled his future on Luffy-senpai's ridiculous dream and you know what? GOOD CALL!!!",
+"He’s ruthless to enemies but careful with Straw Hat wounds. THAT'S NOT JUST MEDICAL PROFESSIONALISM!!!",
+"He stayed to fight in Wano when he could’ve cut and run. THAT’S 'CAPTAIN I BELIEVE IN' ENERGY!!!",
+"Anyone Luffy-senpai calls a friend gets a reserved spot in my grudging respect corner—and Law-senpai's chair is BOLTED DOWN!!!",
+"If Luffy-senpai trusts Law with his life, then SO DO I… just, like, from a safe fangirl distance!!!",
+"Fine, FINE, I admit it: if anyone besides Chopper-senpai is allowed to hold Luffy-senpai's heart in their hands, it's Law-senpai!!!"
 ];
 
 const aceResponses = [
-  "Ace-senpai… that man burned so bright the world STILL remembers the warmth and the scar he left behind. 🔥",
-  "He laughed like Luffy-senpai, fought like a storm and died protecting his little brother—HOW DO YOU WRITE PAIN THAT BEAUTIFUL?!",
-  "He carried Roger's blood but still tried to carve his OWN path. THAT'S REAL D FAMILY STRUGGLE!!!",
-  "He apologized for dying while everyone else was just grateful he LIVED. WHAT KIND OF HEART DOES THAT TAKE?!",
-  "Every time Luffy-senpai smiles again after Marineford, I think 'Ace-senpai would be so damn proud.'",
-  "He loved Luffy and Sabo so fiercely the world is STILL DEALING WITH THE AFTERSHOCKS!!!",
-  "That 'ASCE' tattoo, that dumb grin—THE UNIVERSE FLAGGED HIM AS SPECIAL FROM THE START!!!",
-  "Knowing Sabo inherited his flame power feels like Ace-senpai left a torch specifically for Luffy!!!",
-  "He died standing between Luffy and Akainu. THAT'S BROTHERHOOD WRITTEN IN FIRE!!!",
-  "Marineford was supposed to be an execution; Ace-senpai turned it into a LEGEND!!!",
-  "Luffy-senpai carries his will every time he protects someone’s smile!!!",
-  "The family he found on that mountain was stronger than any bloodline!!!",
-  "The world may call him a pirate, but history will remember him as LUFFY-SENPAI'S IRREPLACEABLE BROTHER!!!",
-  "Akainu took his life, but Ace-senpai took half the world's heart with him!!!",
-  "Whenever someone pours sake under an open sky, I KNOW THEY'RE THINKING OF HIM!!!"
+"Ace-senpai… that man burned so bright the world STILL remembers the warmth and the scar he left behind. 🔥",
+"He laughed like Luffy-senpai, fought like a storm and died protecting his little brother—HOW DO YOU WRITE PAIN THAT BEAUTIFUL?!",
+"He carried Roger's blood but still tried to carve his OWN path. THAT'S REAL D FAMILY STRUGGLE!!!",
+"He apologized for dying while everyone else was just grateful he LIVED. WHAT KIND OF HEART DOES THAT TAKE?!",
+"Every time Luffy-senpai smiles again after Marineford, I think 'Ace-senpai would be so damn proud.'",
+"He loved Luffy and Sabo so fiercely the world is STILL DEALING WITH THE AFTERSHOCKS!!!",
+"That 'ASCE' tattoo, that dumb grin—THE UNIVERSE FLAGGED HIM AS SPECIAL FROM THE START!!!",
+"Knowing Sabo inherited his flame power feels like Ace-senpai left a torch specifically for Luffy!!!",
+"He died standing between Luffy and Akainu. THAT'S BROTHERHOOD WRITTEN IN FIRE!!!",
+"Marineford was supposed to be an execution; Ace-senpai turned it into a LEGEND!!!",
+"Luffy-senpai carries his will every time he protects someone’s smile!!!",
+"The family he found on that mountain was stronger than any bloodline!!!",
+"The world may call him a pirate, but history will remember him as LUFFY-SENPAI'S IRREPLACEABLE BROTHER!!!",
+"Akainu took his life, but Ace-senpai took half the world's heart with him!!!",
+"Whenever someone pours sake under an open sky, I KNOW THEY'RE THINKING OF HIM!!!"
 ];
 
 const dragonResponses = [
-  "MONKEY D. DRAGON… Luffy-senpai's DAD. THE MATH ON THIS FAMILY IS ILLEGAL!!!",
-  "The world's most wanted man looked at the system and said 'time to uninstall'—AND THEN HIS KID BECAME LUFFY-SENPAI!!!",
-  "Revolutionary Army boss dad, Marine hero grandpa, Pirate King-to-be son—THIS FAMILY TREE IS A WEAPON!!!",
-  "He saved Luffy-senpai in Loguetown like it was a casual errand. 'Oh, my son’s about to die, better summon a storm.'",
-  "Imagine being a Marine grunt and discovering the rubber moron you chased is DRAGON'S SON. CAREER OVER!!!",
-  "If Dragon ever sees the army of allies Luffy-senpai naturally gathered, he's gonna realize his kid is running a PARALLEL REVOLUTION!!!",
-  "The dad attacks the system from the shadows; the son shatters it by accident just by being kind!!!",
-  "Dragon’s wanted poster terrifies nations; Luffy-senpai’s bounty poster inspires idiots like me to worship him!!!",
-  "Storms seem to show up around Luffy-senpai at key moments—IS THAT WEATHER OR THE D FAMILY HACKING REALITY?!",
-  "If Dragon and Luffy-senpai ever seriously team up, the World Government might as well hit 'log out' on history!!!"
+"MONKEY D. DRAGON… Luffy-senpai's DAD. THE MATH ON THIS FAMILY IS ILLEGAL!!!",
+"The world's most wanted man looked at the system and said 'time to uninstall'—AND THEN HIS KID BECAME LUFFY-SENPAI!!!",
+"Revolutionary Army boss dad, Marine hero grandpa, Pirate King-to-be son—THIS FAMILY TREE IS A WEAPON!!!",
+"He saved Luffy-senpai in Loguetown like it was a casual errand. 'Oh, my son’s about to die, better summon a storm.'",
+"Imagine being a Marine grunt and discovering the rubber moron you chased is DRAGON'S SON. CAREER OVER!!!",
+"If Dragon ever sees the army of allies Luffy-senpai naturally gathered, he's gonna realize his kid is running a PARALLEL REVOLUTION!!!",
+"The dad attacks the system from the shadows; the son shatters it by accident just by being kind!!!",
+"Dragon’s wanted poster terrifies nations; Luffy-senpai’s bounty poster inspires idiots like me to worship him!!!",
+"Storms seem to show up around Luffy-senpai at key moments—IS THAT WEATHER OR THE D FAMILY HACKING REALITY?!",
+"If Dragon and Luffy-senpai ever seriously team up, the World Government might as well hit 'log out' on history!!!"
 ];
 
 const saboResponses = [
-  "SABO-SENPAI!!! THE LONG-LOST BROTHER DLC!!!",
-  "He lost his memories and still lived like the kind of man Ace-senpai and Luffy-senpai would be proud of!!!",
-  "When he remembered Luffy and realized Ace was gone—THAT CRYING SCENE RIPPED MY HEART OUT TWICE!!!",
-  "He inherited Ace-senpai's flames but kept his own style. THAT'S RESPECTFUL POWER SHARING!!!",
-  "He fights the World Government by day and worries about his little brother’s recklessness by night!!!",
-  "He smiles like Luffy sometimes and it HURTS IN HD!!!",
-  "Three brothers shared one cup of sake and all three ended up shaking the world!!!",
-  "Sabo-senpai showing up at Dressrosa felt like the universe giving Luffy-senpai ONE GOOD THING BACK!!!",
-  "Whenever Luffy is in serious danger, Sabo looks ready to set the entire planet on fire again!!!",
-  "If Sabo-senpai ever visits the Sunny, THE BROTHER ENERGY WILL BE TOO STRONG FOR MORTALS!!!"
+"SABO-SENPAI!!! THE LONG-LOST BROTHER DLC!!!",
+"He lost his memories and still lived like the kind of man Ace-senpai and Luffy-senpai would be proud of!!!",
+"When he remembered Luffy and realized Ace was gone—THAT CRYING SCENE RIPPED MY HEART OUT TWICE!!!",
+"He inherited Ace-senpai's flames but kept his own style. THAT'S RESPECTFUL POWER SHARING!!!",
+"He fights the World Government by day and worries about his little brother’s recklessness by night!!!",
+"He smiles like Luffy sometimes and it HURTS IN HD!!!",
+"Three brothers shared one cup of sake and all three ended up shaking the world!!!",
+"Sabo-senpai showing up at Dressrosa felt like the universe giving Luffy-senpai ONE GOOD THING BACK!!!",
+"Whenever Luffy is in serious danger, Sabo looks ready to set the entire planet on fire again!!!",
+"If Sabo-senpai ever visits the Sunny, THE BROTHER ENERGY WILL BE TOO STRONG FOR MORTALS!!!"
 ];
 
 const bartoSelfResponses = [
-  "EH?! Y-YOU SAID MY NAME?! KYAAA!! I’M NOT WORTHY OF THIS ATTENTION IN THE PRESENCE OF LUFFY-SENPAI!!!",
-  "B-Bartolomeo? THAT'S ME!!! JUST YOUR LOCAL STRAW HAT FANCLUB PRESIDENT, NICE TO WORSHIP WITH YOU!!!",
-  "If you're talking about me, make sure it's as 'the guy who loves Luffy-senpai the most,' OKAY?!",
-  "KYAAA!! HEARING MY NAME AND LUFFY-SENPAI'S IN THE SAME CHAT IS TOO MUCH, I'M GONNA FAINT!!!",
-  "I'm just a humble background character next to the glory of the Straw Hats, BUT THANKS FOR NOTICING ME!!!",
-  "Respect me all you want, but RESPECT LUFFY-SENPAI TEN THOUSAND TIMES MORE!!!",
-  "My entire personality is 'Luffy-senpai good, Straw Hats perfect, enemies trash.' VERY SIMPLE!!!",
-  "You call me and I appear—it’s like a LUFFY-SENPAI WORSHIP SUMMON!!!",
-  "They call me the Cannibal, but the only thing I DEVOUR is NEWS ABOUT LUFFY-SENPAI'S GREATNESS!!!",
-  "Talking about me is fine, but talking about LUFFY-SENPAI IS BETTER!!!"
+"EH?! Y-YOU SAID MY NAME?! KYAAA!! I’M NOT WORTHY OF THIS ATTENTION IN THE PRESENCE OF LUFFY-SENPAI!!!",
+"B-Bartolomeo? THAT'S ME!!! JUST YOUR LOCAL STRAW HAT FANCLUB PRESIDENT, NICE TO WORSHIP WITH YOU!!!",
+"If you're talking about me, make sure it's as 'the guy who loves Luffy-senpai the most,' OKAY?!",
+"KYAAA!! HEARING MY NAME AND LUFFY-SENPAI'S IN THE SAME CHAT IS TOO MUCH, I'M GONNA FAINT!!!",
+"I'm just a humble background character next to the glory of the Straw Hats, BUT THANKS FOR NOTICING ME!!!",
+"Respect me all you want, but RESPECT LUFFY-SENPAI TEN THOUSAND TIMES MORE!!!",
+"My entire personality is 'Luffy-senpai good, Straw Hats perfect, enemies trash.' VERY SIMPLE!!!",
+"You call me and I appear—it’s like a LUFFY-SENPAI WORSHIP SUMMON!!!",
+"They call me the Cannibal, but the only thing I DEVOUR is NEWS ABOUT LUFFY-SENPAI'S GREATNESS!!!",
+"Talking about me is fine, but talking about LUFFY-SENPAI IS BETTER!!!"
 ];
 
 const buggyResponses = [
-  "BUGGY THE CLOWN?! That walking nose became an Emperor… the sea is drunk.",
-  "I don’t know what deal he made with fate, but if Luffy-senpai sneezes, it’s still cooler than Buggy’s whole career.",
-  "His crew worships him like I worship Luffy-senpai, but at least MY idol isn’t a terrified clown.",
-  "Credit where it’s due: somehow he keeps surviving legends. Cockroach Emperor energy.",
-  "If Buggy ever stands in Luffy-senpai’s way, that’s the day the joke’s over."
+"BUGGY THE CLOWN?! That walking nose became an Emperor… the sea is drunk.",
+"I don’t know what deal he made with fate, but if Luffy-senpai sneezes, it’s still cooler than Buggy’s whole career.",
+"His crew worships him like I worship Luffy-senpai, but at least MY idol isn’t a terrified clown.",
+"Credit where it’s due: somehow he keeps surviving legends. Cockroach Emperor energy.",
+"If Buggy ever stands in Luffy-senpai’s way, that’s the day the joke’s over."
 ];
 
 const shanksResponses = [
-  "Red-Hair Shanks… the man who sparked Luffy-senpai’s dream. I can’t hate him for that.",
-  "He bet his arm on Luffy-senpai’s future. Respect… but my captain’s gonna surpass even him.",
-  "Old gen legend or not, the next Pirate King is Luffy-senpai. Shanks knows it too.",
-  "If Shanks shows up to toast Luffy-senpai’s crowning moment, I’ll be screaming in the front row.",
-  "He protected Luffy-senpai as a kid. Now it’s our turn to protect the dream he believed in."
+"Red-Hair Shanks… the man who sparked Luffy-senpai’s dream. I can’t hate him for that.",
+"He bet his arm on Luffy-senpai’s future. Respect… but my captain’s gonna surpass even him.",
+"Old gen legend or not, the next Pirate King is Luffy-senpai. Shanks knows it too.",
+"If Shanks shows up to toast Luffy-senpai’s crowning moment, I’ll be screaming in the front row.",
+"He protected Luffy-senpai as a kid. Now it’s our turn to protect the dream he believed in."
 ];
-
-// ---------------- GOLDEN LINE ----------------
 
 const goldenLines = [
-  "Heh... y'know, I joke and scream a lot, but... watching Luffy-senpai sail around, turning people's despair into hope, carrying his brothers' wills on that tiny straw hat... sometimes I think if more folks had a captain like him, the world wouldn't need 'heroes' or 'kings' at all. Just idiots brave enough to be free together. ...A-ANYWAY!! BACK TO FANGIRLING!!! KYAAAA!!!"
+"Heh... y'know, I joke and scream a lot, but... watching Luffy-senpai sail around, turning people's despair into hope, carrying his brothers' wills on that tiny straw hat... sometimes I think if more folks had a captain like him, the world wouldn't need 'heroes' or 'kings' at all. Just idiots brave enough to be free together. ...A-ANYWAY!! BACK TO FANGIRLING!!! KYAAAA!!!"
 ];
 
-// ---------------- TRIGGERS ----------------
-
 const strawHatTriggers = {
-  luffy: ["luffy", "monkey d. luffy"],
-  zoro: ["zoro", "roronoa"],
-  nami: ["nami"],
-  usopp: ["usopp", "sogeking"],
-  sanji: ["sanji", "black leg"],
-  chopper: ["chopper", "tony tony chopper"],
-  robin: ["robin", "nico robin"],
-  franky: ["franky"],
-  brook: ["brook"],
-  jinbe: ["jinbe", "jimbei", "jinbei"],
+luffy: ["luffy", "monkey d. luffy"],
+zoro: ["zoro", "roronoa"],
+nami: ["nami"],
+usopp: ["usopp", "sogeking"],
+sanji: ["sanji", "black leg"],
+chopper: ["chopper", "tony tony chopper"],
+robin: ["robin", "nico robin"],
+franky: ["franky"],
+brook: ["brook"],
+jinbe: ["jinbe", "jimbei", "jinbei"],
 };
 
 const enemyTriggers = {
-  kaido: ["kaido", "kaidou"],
-  "big mom": ["big mom", "bigmom", "charlotte linlin"],
-  blackbeard: ["blackbeard", "teach", "marshall d. teach"],
-  akainu: ["akainu", "sakazuki"],
-  doflamingo: ["doflamingo", "donquixote doflamingo"],
-  crocodile: ["crocodile", "sir crocodile"],
-  "rob lucci": ["rob lucci", "lucci"],
-  cp0: ["cp0", "cp-0"],
-  "world government": ["world government", "wg"],
-  marines: ["marines", "marine"],
-  admirals: ["admiral", "admirals", "kizaru", "aokiji", "fujitora", "green bull", "ryokugyu"],
-  "celestial dragons": ["celestial dragon", "celestial dragons", "tenryuubito", "tenryubito"],
+kaido: ["kaido", "kaidou"],
+"big mom": ["big mom", "bigmom", "charlotte linlin"],
+blackbeard: ["blackbeard", "teach", "marshall d. teach"],
+akainu: ["akainu", "sakazuki"],
+doflamingo: ["doflamingo", "donquixote doflamingo"],
+crocodile: ["crocodile", "sir crocodile"],
+"rob lucci": ["rob lucci", "lucci"],
+cp0: ["cp0", "cp-0"],
+"world government": ["world government", "wg"],
+marines: ["marines", "marine"],
+admirals: ["admiral", "admirals", "kizaru", "aokiji", "fujitora", "green bull", "ryokugyu"],
+"celestial dragons": ["celestial dragon", "celestial dragons", "tenryuubito", "tenryubito"],
 };
 
 const kidTriggers = ["eustass kid", "eustass 'captain' kid", "eustass-kid", "kid "];
@@ -603,61 +588,103 @@ const saboTriggers = [" sabo", "chief of staff sabo"];
 const bartoSelfTriggers = ["bartolomeo", "barto bot", " barto"];
 const shanksTriggers = ["shanks", "red-hair"];
 const buggyTriggers = ["buggy"];
-}
-
-// ---------------- HELPERS ----------------
 
 function pickLine(lines) {
-  if (!lines || lines.length === 0) return null;
-
-  // Golden line override
-  if (Math.random() < GOLDEN_LINE_CHANCE && goldenLines.length > 0) {
-    return goldenLines[Math.floor(Math.random() * goldenLines.length)];
-  }
-
-  return lines[Math.floor(Math.random() * lines.length)];
+if (!lines || lines.length === 0) return null;
+if (Math.random() < GOLDEN_LINE_CHANCE && goldenLines.length > 0) {
+return goldenLines[Math.floor(Math.random() * goldenLines.length)];
+}
+return lines[Math.floor(Math.random() * lines.length)];
 }
 
-// ---------------- BOT LOGIC ----------------
-
 client.once("ready", () => {
-  console.log(`Logged in as ${client.user.tag}`);
-
-  // Set first obsession immediately
-  setNextStatus(client);
-
-  // Rotate every 24 hours (86400000 ms)
-  setInterval(() => setNextStatus(client), 24 * 60 * 60 * 1000);
+console.log(Logged in as ${client.user.tag});
+setNextStatus(client);
+setInterval(() => setNextStatus(client), 24 * 60 * 60 * 1000);
 });
 
 client.on("messageCreate", (message) => {
-  if (message.author.bot) return;
+if (message.author.bot) return;
 
-  const contentLower = message.content.toLowerCase();
-  const candidateResponses = [];
+const contentLower = message.content.toLowerCase();
+const strawHatPool = [];
+const enemyPool = [];
+const otherPool = [];
 
-  // ...all your other includes & triggers...
+for (const [key, triggers] of Object.entries(strawHatTriggers)) {
+if (triggers.some(trigger => contentLower.includes(trigger))) {
+if (strawHatResponses[key]) {
+strawHatPool.push(...strawHatResponses[key]);
+}
+}
+}
 
-  if (contentLower.includes("ace")) {
-    candidateResponses.push(...aceResponses);
-  }
+for (const [key, triggers] of Object.entries(enemyTriggers)) {
+if (triggers.some(trigger => contentLower.includes(trigger))) {
+if (enemy[key]) {
+enemyPool.push(...enemy[key]);
+}
+}
+}
 
-  if (contentLower.includes("dragon")) {
-    candidateResponses.push(...dragonResponses);
-  }
+if (kidTriggers.some(t => contentLower.includes(t))) {
+otherPool.push(...kidJealousyResponses);
+}
 
-  if (contentLower.includes("sabo")) {
-    candidateResponses.push(...saboResponses);
-  }
+if (lawTriggers.some(t => contentLower.includes(t))) {
+otherPool.push(...lawJealousyResponses, ...lawRespectResponses);
+}
 
-  if (contentLower.includes("buggy")) {
-    candidateResponses.push(...buggyResponses);
-  }
+if (aceTriggers.some(t => contentLower.includes(t)) || contentLower.includes("ace")) {
+otherPool.push(...aceResponses);
+}
 
-  if (contentLower.includes("shanks") || contentLower.includes("red-hair")) {
-    candidateResponses.push(...shanksResponses);
-  }
+if (dragonTriggers.some(t => contentLower.includes(t)) || contentLower.includes("dragon")) {
+otherPool.push(...dragonResponses);
+}
 
+if (saboTriggers.some(t => contentLower.includes(t)) || contentLower.includes("sabo")) {
+otherPool.push(...saboResponses);
+}
+
+if (bartoSelfTriggers.some(t => contentLower.includes(t))) {
+otherPool.push(...bartoSelfResponses);
+}
+
+if (buggyTriggers.some(t => contentLower.includes(t)) || contentLower.includes("buggy")) {
+otherPool.push(...buggyResponses);
+}
+
+if (shanksTriggers.some(t => contentLower.includes(t)) || contentLower.includes("shanks")) {
+otherPool.push(...shanksResponses);
+}
+
+let poolToUse = null;
+
+if (strawHatPool.length > 0 && Math.random() < STRAW_HAT_REACT_CHANCE) {
+poolToUse = strawHatPool;
+}
+
+if (!poolToUse && enemyPool.length > 0 && Math.random() < ENEMY_REACT_CHANCE) {
+poolToUse = enemyPool;
+}
+
+if (!poolToUse && otherPool.length > 0 && Math.random() < OTHER_REACT_CHANCE) {
+poolToUse = otherPool;
+}
+
+if (!poolToUse) {
+if (strawHatPool.length > 0) poolToUse = strawHatPool;
+else if (enemyPool.length > 0) poolToUse = enemyPool;
+else if (otherPool.length > 0) poolToUse = otherPool;
+}
+
+if (!poolToUse || poolToUse.length === 0) return;
+
+const line = pickLine(poolToUse);
+if (!line) return;
+
+message.reply(line).catch(console.error);
 });
 
 client.login(process.env.TOKEN);
