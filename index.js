@@ -283,9 +283,9 @@ const strawHatResponses = {
   ],
 };
 
-// ---------------- ENEMY RESPONSES ----------------
+// ---------------- ENEMY  ----------------
 
-const enemyResponses = {
+const enemy = {
   kaido: [
     "KAIDO?! WHY ARE YOU SAYING THAT NAME LIKE IT'S NORMAL?! THAT'S A WALKING NATURAL DISASTER!!!",
     "He called himself the strongest creature and still got PUNCHED OFF HIS THRONE BY LUFFY-SENPAI!!!",
@@ -541,6 +541,22 @@ const bartoSelfResponses = [
   "Talking about me is fine, but talking about LUFFY-SENPAI IS BETTER!!!"
 ];
 
+  buggy: [
+    "BUGGY THE CLOWN?! That walking nose became an Emperor… the sea is drunk.",
+    "I don’t know what deal he made with fate, but if Luffy-senpai sneezes, it’s still cooler than Buggy’s whole career.",
+    "His crew worships him like I worship Luffy-senpai, but at least MY idol isn’t a terrified clown.",
+    "Credit where it’s due: somehow he keeps surviving legends. Cockroach Emperor energy.",
+    "If Buggy ever stands in Luffy-senpai’s way, that’s the day the joke’s over."
+  ],
+
+  shanks: [
+    "Red-Hair Shanks… the man who sparked Luffy-senpai’s dream. I can’t hate him for that.",
+    "He bet his arm on Luffy-senpai’s future. Respect… but my captain’s gonna surpass even him.",
+    "Old gen legend or not, the next Pirate King is Luffy-senpai. Shanks knows it too.",
+    "If Shanks shows up to toast Luffy-senpai’s crowning moment, I’ll be screaming in the front row.",
+    "He protected Luffy-senpai as a kid. Now it’s our turn to protect the dream he believed in."
+  ],
+
 // ---------------- GOLDEN LINE ----------------
 
 const goldenLines = [
@@ -583,6 +599,14 @@ const aceTriggers = ["portgas d. ace", "fire fist ace", " ace "];
 const dragonTriggers = ["monkey d. dragon", " dragon "];
 const saboTriggers = [" sabo", "chief of staff sabo"];
 const bartoSelfTriggers = ["bartolomeo", "barto bot", " barto"];
+
+if (contentLower.includes("buggy")) {
+    candidateResponses.push(...otherResponses.buggy);
+}
+
+if (contentLower.includes("shanks") || contentLower.includes("red-hair")) {
+    candidateResponses.push(...otherResponses.shanks);
+}
 
 // ---------------- HELPERS ----------------
 
