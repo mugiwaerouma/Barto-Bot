@@ -31,7 +31,11 @@ let statusIndex = 0;
 
 function setNextStatus(client) {
   const status = strawHatStatuses[statusIndex];
-  client.user.setActivity(status.text, { type: status.type }).catch(console.error);
+  try {
+    client.user.setActivity(status.text, { type: status.type });
+  } catch (err) {
+    console.error(err);
+  }
   statusIndex = (statusIndex + 1) % strawHatStatuses.length;
 }
 
