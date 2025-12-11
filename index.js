@@ -1,6 +1,6 @@
 
 require('dotenv').config();
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, ActivityType } = require("discord.js");
 
 const client = new Client({
   intents: [
@@ -15,6 +15,30 @@ const STRAW_HAT_REACT_CHANCE = 0.2;
 const ENEMY_REACT_CHANCE = 0.2;
 const OTHER_REACT_CHANCE = 0.2;   // Kid, Law, Ace, Dragon, Sabo, Barto self
 const GOLDEN_LINE_CHANCE = 0.01;  // 1% chance
+// ------------------- DAILY STATUS ROTATION -------------------
+
+const strawHatStatuses = [
+  { text: "Luffy-senpai’s every move", type: ActivityType.Watching },
+  { text: "Zoro-senpai protecting Luffy-senpai", type: ActivityType.Watching },
+  { text: "Nami-senpai scolding Luffy-senpai", type: ActivityType.Listening },
+  { text: "Usopp-senpai telling heroic tales of Luffy-senpai", type: ActivityType.Listening },
+  { text: "Sanji-senpai cooking meat for Luffy-senpai", type: ActivityType.Watching },
+  { text: "Chopper-senpai treating Luffy-senpai’s injuries", type: ActivityType.Watching },
+  { text: "Robin-senpai reading while Luffy-senpai naps nearby", type: ActivityType.Watching },
+  { text: "Franky-senpai upgrading the Sunny for the captain", type: ActivityType.Playing },
+  { text: "Brook-senpai’s songs written for Luffy-senpai", type: ActivityType.Listening },
+  { text: "Jinbe-senpai guarding the future Pirate King", type: ActivityType.Watching }
+];
+
+let statusIndex = 0;
+
+function setNextStatus(client) {
+  const status = strawHatStatuses[statusIndex];
+  client.user.setActivity(status.text, { type: status.type })
+    .catch(console.error);
+
+  statusIndex = (statusIndex + 1) % strawHatStatuses.length;
+}
 
 // ---------------- STRAW HAT RESPONSES ----------------
 
@@ -575,8 +599,14 @@ function pickLine(lines) {
 
 // ---------------- BOT LOGIC ----------------
 
-client.once('ready', () => {
-  console.log(`Bartolomeo Bot is online as ${client.user.tag}!`);
+client.once("ready", () => {
+  console.log(`Logged in as ${client.user.tag}`);
+
+  // Set first obsession immediately
+  setNextStatus(client);
+
+  // Rotate every 24 hours (86400000 ms)
+  setInterval(() => setNextStatus(client), 24 * 60 * 60 * 1000);
 });
 
 client.on('messageCreate', (message) => {
