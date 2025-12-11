@@ -601,13 +601,8 @@ const aceTriggers = ["portgas d. ace", "fire fist ace", " ace "];
 const dragonTriggers = ["monkey d. dragon", " dragon "];
 const saboTriggers = [" sabo", "chief of staff sabo"];
 const bartoSelfTriggers = ["bartolomeo", "barto bot", " barto"];
-
-if (contentLower.includes("buggy")) {
-  candidateResponses.push(...buggyResponses);
-}
-
-if (contentLower.includes("shanks") || contentLower.includes("red-hair")) {
-  candidateResponses.push(...shanksResponses);
+const shanksTriggers = ["shanks", "red-hair"];
+const buggyTriggers = ["buggy"];
 }
 
 // ---------------- HELPERS ----------------
