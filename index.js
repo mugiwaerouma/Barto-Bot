@@ -675,12 +675,6 @@ client.on("messageCreate", (message) => {
     poolToUse = otherPool;
   }
 
-  if (!poolToUse) {
-    if (strawHatPool.length > 0) poolToUse = strawHatPool;
-    else if (enemyPool.length > 0) poolToUse = enemyPool;
-    else if (otherPool.length > 0) poolToUse = otherPool;
-  }
-
   if (!poolToUse || poolToUse.length === 0) return;
 
   const line = pickLine(poolToUse);
