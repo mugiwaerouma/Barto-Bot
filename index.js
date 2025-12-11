@@ -456,7 +456,7 @@ const kidJealousyResponses = [
   "Whenever they argue over who'll take down a Yonko first, I KNOW WHERE I'M BETTING MY FANGIRL SOUL!!!",
   "Kid can chase the Pirate King title all he wants, but history’s only carving ONE STRAW HAT ON THAT PAGE!!!",
   "If he calls Luffy-senpai 'brat' again I’M GONNA SHOW HIM WHAT A REAL FANBRAT LOOKS LIKE!!!"
-];
+],
 
 const lawJealousyResponses = [
   "TRAFFY AGAIN?! Why is he ALWAYS next to Luffy-senpai like some cool mysterious rival-love-interest hybrid?!",
@@ -469,7 +469,7 @@ const lawJealousyResponses = [
   "If Law-senpai keeps teleporting Luffy-senpai out of danger I’M GONNA HAVE TO THANK HIM THROUGH GRITTED TEETH!!!",
   "He looks exhausted but RELIEVED whenever Luffy-senpai wakes up in one piece. EMOTIONALLY COMPROMISED, MUCH?!",
   "Sometimes I swear the real D in his name stands for 'Deeply Concerned about Straw Hat'!!!"
-];
+],
 
 const lawRespectResponses = [
   "Okay, OKAY, listen… I might be jealous, but I’m not blind. Law-senpai has saved Luffy-senpai's life more times than I can count!!!",
@@ -482,7 +482,7 @@ const lawRespectResponses = [
   "Anyone Luffy-senpai calls a friend gets a reserved spot in my grudging respect corner—and Law-senpai's chair is BOLTED DOWN!!!",
   "If Luffy-senpai trusts Law with his life, then SO DO I… just, like, from a safe fangirl distance!!!",
   "Fine, FINE, I admit it: if anyone besides Chopper-senpai is allowed to hold Luffy-senpai's heart in their hands, it's Law-senpai!!!"
-];
+],
 
 const aceResponses = [
   "Ace-senpai… that man burned so bright the world STILL remembers the warmth and the scar he left behind. 🔥",
@@ -500,7 +500,7 @@ const aceResponses = [
   "The world may call him a pirate, but history will remember him as LUFFY-SENPAI'S IRREPLACEABLE BROTHER!!!",
   "Akainu took his life, but Ace-senpai took half the world's heart with him!!!",
   "Whenever someone pours sake under an open sky, I KNOW THEY'RE THINKING OF HIM!!!"
-];
+],
 
 const dragonResponses = [
   "MONKEY D. DRAGON… Luffy-senpai's DAD. THE MATH ON THIS FAMILY IS ILLEGAL!!!",
@@ -513,7 +513,7 @@ const dragonResponses = [
   "Dragon’s wanted poster terrifies nations; Luffy-senpai’s bounty poster inspires idiots like me to worship him!!!",
   "Storms seem to show up around Luffy-senpai at key moments—IS THAT WEATHER OR THE D FAMILY HACKING REALITY?!",
   "If Dragon and Luffy-senpai ever seriously team up, the World Government might as well hit 'log out' on history!!!"
-];
+],
 
 const saboResponses = [
   "SABO-SENPAI!!! THE LONG-LOST BROTHER DLC!!!",
@@ -526,7 +526,7 @@ const saboResponses = [
   "Sabo-senpai showing up at Dressrosa felt like the universe giving Luffy-senpai ONE GOOD THING BACK!!!",
   "Whenever Luffy is in serious danger, Sabo looks ready to set the entire planet on fire again!!!",
   "If Sabo-senpai ever visits the Sunny, THE BROTHER ENERGY WILL BE TOO STRONG FOR MORTALS!!!"
-];
+],
 
 const bartoSelfResponses = [
   "EH?! Y-YOU SAID MY NAME?! KYAAA!! I’M NOT WORTHY OF THIS ATTENTION IN THE PRESENCE OF LUFFY-SENPAI!!!",
