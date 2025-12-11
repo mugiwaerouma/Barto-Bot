@@ -555,7 +555,8 @@ const bartoSelfResponses = [
     "Old gen legend or not, the next Pirate King is Luffy-senpai. Shanks knows it too.",
     "If Shanks shows up to toast Luffy-senpai’s crowning moment, I’ll be screaming in the front row.",
     "He protected Luffy-senpai as a kid. Now it’s our turn to protect the dream he believed in."
-  ],
+  ]
+};
 
 // ---------------- GOLDEN LINE ----------------
 
