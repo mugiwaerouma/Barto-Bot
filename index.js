@@ -445,6 +445,8 @@ const enemy = {
 
 // ---------------- OTHER RESPONSE GROUPS ----------------
 
+// ---------------- OTHER RESPONSE GROUPS ----------------
+
 const kidJealousyResponses = [
   "EUSTASS KID AGAIN?! Why is that walking scrapheap ALWAYS NEAR LUFFY-SENPAI?! BACK OFF, RED MENACE!!!",
   "Every time that metal porcupine stands next to Luffy-senpai my blood pressure goes Gear Second!!!",
@@ -456,7 +458,7 @@ const kidJealousyResponses = [
   "Whenever they argue over who'll take down a Yonko first, I KNOW WHERE I'M BETTING MY FANGIRL SOUL!!!",
   "Kid can chase the Pirate King title all he wants, but history’s only carving ONE STRAW HAT ON THAT PAGE!!!",
   "If he calls Luffy-senpai 'brat' again I’M GONNA SHOW HIM WHAT A REAL FANBRAT LOOKS LIKE!!!"
-],
+];
 
 const lawJealousyResponses = [
   "TRAFFY AGAIN?! Why is he ALWAYS next to Luffy-senpai like some cool mysterious rival-love-interest hybrid?!",
@@ -469,7 +471,7 @@ const lawJealousyResponses = [
   "If Law-senpai keeps teleporting Luffy-senpai out of danger I’M GONNA HAVE TO THANK HIM THROUGH GRITTED TEETH!!!",
   "He looks exhausted but RELIEVED whenever Luffy-senpai wakes up in one piece. EMOTIONALLY COMPROMISED, MUCH?!",
   "Sometimes I swear the real D in his name stands for 'Deeply Concerned about Straw Hat'!!!"
-],
+];
 
 const lawRespectResponses = [
   "Okay, OKAY, listen… I might be jealous, but I’m not blind. Law-senpai has saved Luffy-senpai's life more times than I can count!!!",
@@ -482,7 +484,7 @@ const lawRespectResponses = [
   "Anyone Luffy-senpai calls a friend gets a reserved spot in my grudging respect corner—and Law-senpai's chair is BOLTED DOWN!!!",
   "If Luffy-senpai trusts Law with his life, then SO DO I… just, like, from a safe fangirl distance!!!",
   "Fine, FINE, I admit it: if anyone besides Chopper-senpai is allowed to hold Luffy-senpai's heart in their hands, it's Law-senpai!!!"
-],
+];
 
 const aceResponses = [
   "Ace-senpai… that man burned so bright the world STILL remembers the warmth and the scar he left behind. 🔥",
@@ -500,7 +502,7 @@ const aceResponses = [
   "The world may call him a pirate, but history will remember him as LUFFY-SENPAI'S IRREPLACEABLE BROTHER!!!",
   "Akainu took his life, but Ace-senpai took half the world's heart with him!!!",
   "Whenever someone pours sake under an open sky, I KNOW THEY'RE THINKING OF HIM!!!"
-],
+];
 
 const dragonResponses = [
   "MONKEY D. DRAGON… Luffy-senpai's DAD. THE MATH ON THIS FAMILY IS ILLEGAL!!!",
@@ -513,7 +515,7 @@ const dragonResponses = [
   "Dragon’s wanted poster terrifies nations; Luffy-senpai’s bounty poster inspires idiots like me to worship him!!!",
   "Storms seem to show up around Luffy-senpai at key moments—IS THAT WEATHER OR THE D FAMILY HACKING REALITY?!",
   "If Dragon and Luffy-senpai ever seriously team up, the World Government might as well hit 'log out' on history!!!"
-],
+];
 
 const saboResponses = [
   "SABO-SENPAI!!! THE LONG-LOST BROTHER DLC!!!",
@@ -526,7 +528,7 @@ const saboResponses = [
   "Sabo-senpai showing up at Dressrosa felt like the universe giving Luffy-senpai ONE GOOD THING BACK!!!",
   "Whenever Luffy is in serious danger, Sabo looks ready to set the entire planet on fire again!!!",
   "If Sabo-senpai ever visits the Sunny, THE BROTHER ENERGY WILL BE TOO STRONG FOR MORTALS!!!"
-],
+];
 
 const bartoSelfResponses = [
   "EH?! Y-YOU SAID MY NAME?! KYAAA!! I’M NOT WORTHY OF THIS ATTENTION IN THE PRESENCE OF LUFFY-SENPAI!!!",
@@ -539,24 +541,23 @@ const bartoSelfResponses = [
   "You call me and I appear—it’s like a LUFFY-SENPAI WORSHIP SUMMON!!!",
   "They call me the Cannibal, but the only thing I DEVOUR is NEWS ABOUT LUFFY-SENPAI'S GREATNESS!!!",
   "Talking about me is fine, but talking about LUFFY-SENPAI IS BETTER!!!"
-],
+];
 
-  buggy: [
-    "BUGGY THE CLOWN?! That walking nose became an Emperor… the sea is drunk.",
-    "I don’t know what deal he made with fate, but if Luffy-senpai sneezes, it’s still cooler than Buggy’s whole career.",
-    "His crew worships him like I worship Luffy-senpai, but at least MY idol isn’t a terrified clown.",
-    "Credit where it’s due: somehow he keeps surviving legends. Cockroach Emperor energy.",
-    "If Buggy ever stands in Luffy-senpai’s way, that’s the day the joke’s over."
-  ],
+const buggyResponses = [
+  "BUGGY THE CLOWN?! That walking nose became an Emperor… the sea is drunk.",
+  "I don’t know what deal he made with fate, but if Luffy-senpai sneezes, it’s still cooler than Buggy’s whole career.",
+  "His crew worships him like I worship Luffy-senpai, but at least MY idol isn’t a terrified clown.",
+  "Credit where it’s due: somehow he keeps surviving legends. Cockroach Emperor energy.",
+  "If Buggy ever stands in Luffy-senpai’s way, that’s the day the joke’s over."
+];
 
-  shanks: [
-    "Red-Hair Shanks… the man who sparked Luffy-senpai’s dream. I can’t hate him for that.",
-    "He bet his arm on Luffy-senpai’s future. Respect… but my captain’s gonna surpass even him.",
-    "Old gen legend or not, the next Pirate King is Luffy-senpai. Shanks knows it too.",
-    "If Shanks shows up to toast Luffy-senpai’s crowning moment, I’ll be screaming in the front row.",
-    "He protected Luffy-senpai as a kid. Now it’s our turn to protect the dream he believed in."
-  ]
-};
+const shanksResponses = [
+  "Red-Hair Shanks… the man who sparked Luffy-senpai’s dream. I can’t hate him for that.",
+  "He bet his arm on Luffy-senpai’s future. Respect… but my captain’s gonna surpass even him.",
+  "Old gen legend or not, the next Pirate King is Luffy-senpai. Shanks knows it too.",
+  "If Shanks shows up to toast Luffy-senpai’s crowning moment, I’ll be screaming in the front row.",
+  "He protected Luffy-senpai as a kid. Now it’s our turn to protect the dream he believed in."
+];
 
 // ---------------- GOLDEN LINE ----------------
 
@@ -602,11 +603,11 @@ const saboTriggers = [" sabo", "chief of staff sabo"];
 const bartoSelfTriggers = ["bartolomeo", "barto bot", " barto"];
 
 if (contentLower.includes("buggy")) {
-    candidateResponses.push(...otherResponses.buggy);
+  candidateResponses.push(...buggyResponses);
 }
 
 if (contentLower.includes("shanks") || contentLower.includes("red-hair")) {
-    candidateResponses.push(...otherResponses.shanks);
+  candidateResponses.push(...shanksResponses);
 }
 
 // ---------------- HELPERS ----------------
